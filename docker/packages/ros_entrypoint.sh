@@ -34,7 +34,7 @@ source ./devel/setup.bash
 roscd astra_camera
 #./scripts/create_udev_rules
 
-roslaunch astra_camera astra_pro_plus.launch
+#roslaunch astra_camera astra_pro_plus.launch
 
 
 exec "$@"
