@@ -11,6 +11,7 @@ services:
     volumes:
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /nano_ros1:/catkin_ws/src/nano_ros1   # Create nano_ros1 in the  host by git clone under the main tree
     devices:
       - /dev/bus/usb 
     deploy:
