@@ -44,7 +44,7 @@ if [ $ARCH = "aarch64" ]; then
 
 elif [ $ARCH = "x86_64" ]; then
 	BASE_IMAGE="nvcr.io/nvidia/pytorch:22.04-py3"
-	BASE_IMAGE="nvcr.io/nvidia/tensorflow:xx.xx-tfx-py3"
+	#BASE_IMAGE="nvcr.io/nvidia/tensorflow:xx.xx-tfx-py3"
 fi
 
 echo "L4T Base Image:   $BASE_IMAGE"
