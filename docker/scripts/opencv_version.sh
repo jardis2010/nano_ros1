@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/sh
 # this script selects which OpenCV deb packages to install based on the platform
 
 # do this first:
