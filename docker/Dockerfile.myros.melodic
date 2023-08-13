@@ -1,0 +1,117 @@
+#
+# this dockerfile roughly follows the 'Installing from source' from:
+#   http://wiki.ros.org/noetic/Installation/Source
+#
+# build it with:
+# ./scripts/docker_mybuild_ros.sh
+
+#
+# The run the image with
+# ./scripts/docker_run.sh -c ros:melodic-ros-base-l4t-r32.7.1
+
+# this dockerfile roughly follows the 'Ubuntu install of ROS Melodic' from:
+#   http://wiki.ros.org/melodic/Installation/Ubuntu
+#
+ARG BASE_IMAGE=nvcr.io/nvidia/l4t-base:r32.5.0
+FROM ${BASE_IMAGE}
+
+ARG ROS_PKG=ros_base
+ENV ROS_DISTRO=melodic
+ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
+
+ENV CV_CSV="/etc/nvidia-container-runtime/host-files-for-container.d/opencv.csv"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /workspace
+
+
+# 
+# add the ROS deb repo to the apt sources list
+#
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git \
+        vim \
+        nano \
+		cmake \
+		build-essential \
+		curl \
+		wget \
+		gnupg2 \
+		lsb-release \
+		ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+
+
+# 
+# install ROS packages
+#
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+		ros-melodic-`echo "${ROS_PKG}" | tr '_' '-'` \
+		ros-melodic-image-transport \
+		ros-melodic-vision-msgs \
+        python-rosdep \
+        python-rosinstall \
+        python-rosinstall-generator \
+        python-wstool \
+        python3-opencv \
+        usbutils \
+    && rm -rf /var/lib/apt/lists/*
+
+
+#
+# init/update rosdep
+#
+RUN apt-get update && \
+    cd ${ROS_ROOT} && \
+    rosdep init && \
+    rosdep fix-permissions && \
+    rosdep update && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update 
+RUN apt-get upgrade -y
+RUN apt-get install -y \
+    ros-melodic-vision-opencv \
+    ros-melodic-tf* \
+    ros-melodic-rviz
+ 
+# Build Catkin workspace
+RUN cd /workspace \
+     && mkdir -p /catkin_ws/src 
+ 
+# for Orbbrc Astra Camera
+# - dependencies
+RUN apt install  -y libgflags-dev ros-$ROS_DISTRO-image-geometry ros-$ROS_DISTRO-camera-info-manager \
+    ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher libgoogle-glog-dev \
+    libusb-1.0-0-dev libeigen3-dev
+
+
+# - Install libuvc
+RUN git clone https://github.com/libuvc/libuvc.git  \
+    && cd libuvc  \
+    && mkdir build  &&  cd build  \
+    && cmake .. && make -j4  \
+    && make install && ldconfig
+ 
+RUN  mkdir -p /catkin_ws/src/third_party && cd /catkin_ws/src/third_party \
+     && git clone https://github.com/orbbec/ros_astra_camera.git 
+
+# make a directory for my robot
+RUN mkdir -p /catkin_ws/src/nano_ros1
+
+
+# 
+# setup entrypoint
+#
+COPY ./packages/ros_entrypoint.sh /ros_entrypoint.sh
+RUN chmod +x /ros_entrypoint.sh
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
+WORKDIR /

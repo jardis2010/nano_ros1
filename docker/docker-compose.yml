@@ -1,0 +1,25 @@
+version: '3'
+services:
+  myros:
+    image: ros:melodic-ros-base-l4t-r32.7.1
+    build: Dockerfile.myros.melodic
+    network_mode: host
+    environment:
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=/tmp/.docker.xauth
+      - XDG_RUNTIME_DIR=/tmp
+    volumes:
+      - /tmp/.X11-unix/:/tmp/.X11-unix
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+    devices:
+      - /dev/bus/usb 
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+    user: root
+    command: tail -F anything # not to exit
+    tty: true 
