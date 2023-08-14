@@ -1,0 +1,11 @@
+linear_correction_factor: 1.00
+angular_correction_factor: 1.00
+omni:
+  go_factor: 0.90
+  turn_factor: 0.92
+
+# linear_correction_factor: 1.00
+# angular_correction_factor: 1.00
+#omni:
+#  go_factor: 1.31
+#  turn_factor: 1.31

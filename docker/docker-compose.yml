@@ -11,7 +11,9 @@ services:
     volumes:
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /tmp/.docker.xauth:/tmp/.docker.xauth
-      - /nano_ros1:/catkin_ws/src/nano_ros1   # Create nano_ros1 in the  host by git clone under the main tree
+      - type: bind
+        source: /home/jardis//nano_ros1/docker/jetauto/
+        target: /catkin_ws/src/jetauto
     devices:
       - /dev/bus/usb 
     deploy:
