@@ -10,7 +10,6 @@ project(jetauto_controller)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   jetauto_sdk
-  joy
   std_msgs
 )
 

@@ -60,9 +60,12 @@ RUN apt-get update && \
         python-rosinstall-generator \
         python-wstool \
         python3-opencv \
+        python3-pip \
         usbutils \
     && rm -rf /var/lib/apt/lists/*
 
+# Install smbus2
+RUN pip3 install smbus2
 
 #
 # init/update rosdep
