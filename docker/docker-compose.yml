@@ -16,6 +16,11 @@ services:
         target: /catkin_ws/src/jetauto
     devices:
       - /dev/bus/usb 
+      - /dev/i2c-0
+      - /dev/i2c-1
+      - /dev/i2c-2
+      - /dev/i2c-3
+      - /dev/i2c-4
     deploy:
       resources:
         reservations:
