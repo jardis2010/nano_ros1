@@ -4,7 +4,7 @@
 # do this first:
 # source scripts/docker_base.sh
 
-if [ $ARCH = "aarch64" ]; then
+if [[ $ARCH = "aarch64" ]]; then
 	echo "selecting OpenCV for L4T R$L4T_VERSION..."
 
 	if [[ $L4T_RELEASE -eq 32 ]]; then
@@ -15,7 +15,7 @@ if [ $ARCH = "aarch64" ]; then
 		OPENCV_DEB="OpenCV-4.5.0-aarch64.tar.gz"
 	fi
 	
-elif [ $ARCH = "x86_64" ]; then
+elif [[ $ARCH = "x86_64" ]]; then
 	echo "selecting OpenCV for $ARCH"
 
 	OPENCV_URL="https://nvidia.box.com/shared/static/vfp7krqf5bws752ts58rckpx3nyopmp1.gz"

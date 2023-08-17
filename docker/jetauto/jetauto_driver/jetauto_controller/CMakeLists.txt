@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   jetauto_sdk
   std_msgs
+  joy
 )
 
 ## System dependencies are found with CMake's conventions

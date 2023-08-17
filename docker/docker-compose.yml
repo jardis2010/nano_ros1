@@ -12,7 +12,7 @@ services:
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /tmp/.docker.xauth:/tmp/.docker.xauth
       - type: bind
-        source: /home/jardis//nano_ros1/docker/jetauto/
+        source: /home/jetauto/nano_ros1/docker/jetauto/
         target: /catkin_ws/src/jetauto
     devices:
       - /dev/bus/usb 
@@ -21,6 +21,9 @@ services:
       - /dev/i2c-2
       - /dev/i2c-3
       - /dev/i2c-4
+      - /dev/gpiochip0
+      - /dev/gpiochip1
+      - /dev/ttyTHS1
     deploy:
       resources:
         reservations:

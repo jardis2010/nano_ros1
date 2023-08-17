@@ -18,6 +18,9 @@ FROM ${BASE_IMAGE}
 ARG ROS_PKG=ros_base
 ENV ROS_DISTRO=melodic
 ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
+ENV MACHINE_TYPE=JetAuto
+ENV JETSON_MODEL_NAME=JETSON_NANO
+
 
 ENV CV_CSV="/etc/nvidia-container-runtime/host-files-for-container.d/opencv.csv"
 
@@ -59,13 +62,17 @@ RUN apt-get update && \
         python-rosinstall \
         python-rosinstall-generator \
         python-wstool \
-        python3-opencv \
         python-pip \
         usbutils \
+        python3-pip \
+        python3-yaml \
+        python3-opencv \
     && rm -rf /var/lib/apt/lists/*
 
 # Install smbus2
 RUN pip install smbus2
+
+RUN pip3 install rospkg catkin_pkg smbus2 Jetson.GPIO
 
 #
 # init/update rosdep
@@ -82,6 +89,8 @@ RUN apt-get upgrade -y
 RUN apt-get install -y \
     ros-melodic-vision-opencv \
     ros-melodic-tf* \
+    ros-melodic-joy \
+    ros-melodic-control-msgs \
     ros-melodic-rviz
  
 # Build Catkin workspace
