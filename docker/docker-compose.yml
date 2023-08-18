@@ -12,7 +12,7 @@ services:
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /tmp/.docker.xauth:/tmp/.docker.xauth
       - type: bind
-        source: /home/jetauto/nano_ros1/docker/jetauto/
+        source: /home/jardis/nano_ros1/docker/jetauto/
         target: /catkin_ws/src/jetauto
     devices:
       - /dev/bus/usb 
