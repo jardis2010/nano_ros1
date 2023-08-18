@@ -1,0 +1,9 @@
+﻿#BNF+IAT 1.0 UTF-8;
+!grammar call;
+
+!start <callstart>;
+
+<callstart>:<move>|<navigation>|<action>;
+<move>:前进|后退|左转|右转|停下|漂移|Go ahead|Back|Turn left|Turn right|Stop;
+<navigation>:去(A|B|C)点|回原点|导航搬运;
+<action>:过来|(开启|关闭)颜色(识别|分拣)|追踪(红色|绿色|蓝色)|停止追踪;

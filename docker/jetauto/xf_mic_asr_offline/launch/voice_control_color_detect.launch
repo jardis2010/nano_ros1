@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find xf_mic_asr_offline)/launch/mic_init.launch"/>
+    <include file="$(find jetauto_peripherals)/launch/astrapro.launch"/>
+    <node pkg="jetauto_example" type="color_detect_node.py" name="color_detect_node" output="screen"/>
+    <node pkg="xf_mic_asr_offline" type="voice_control_color_detect.py" name="voice_control_color_detect_node" output="screen"/>
+</launch>

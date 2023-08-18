@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="map" default=""/>
+    <include file="$(find xf_mic_asr_offline)/launch/mic_init.launch"/>
+    <include file="$(find jetauto_slam)/launch/include/jetauto_robot.launch"/>
+    <include file="$(find jetauto_navigation)/launch/load_map.launch">
+        <arg name="map"    value="$(arg map)"/>
+    </include>
+    <include file="$(find jetauto_navigation)/launch/navigation.launch"/>
+    <include file="$(find jetauto_navigation)/launch/rviz_navigation.launch"/>
+    <node pkg="xf_mic_asr_offline" name="voice_control_navigation" type="voice_control_navigation.py" output="screen"/>
+</launch>
