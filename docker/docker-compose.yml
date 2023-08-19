@@ -11,6 +11,10 @@ services:
     volumes:
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /etc/udev/rules.d:/etc/udev/rules.d
+      - /dev:/dev
+      - /sys/class/gpio:/sys/class/gpio
+      - /sys/devices:/sys/devices
       - type: bind
         source: /home/jardis/nano_ros1/docker/jetauto/
         target: /catkin_ws/src/jetauto

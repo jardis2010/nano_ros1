@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf8
 import time
-import smbus
+import smbus2
 
 IMU_ADDR = 0x68  # imu address
 PWR_MGMT_1 = 0x6b
@@ -24,7 +24,7 @@ GYRO_ZOUT_L = 0x48
 
 class IMU():
     def __init__(self, port=1):
-        self.bus = smbus.SMBus(port)
+        self.bus = smbus2.SMBus(port)
         count = 0
         while True:
             count += 1

@@ -5,13 +5,13 @@
 # 自检程序(self-test program)
 import sys
 import time
-import smbus
+import smbus2
 from jetauto_sdk import buzzer, button
 sys.path.append('/home/jetauto/jetauto_software/jetauto_arm_pc')
 import action_group_controller as controller
 
 def check_sensor():
-    bus = smbus.SMBus(1)
+    bus = smbus2.SMBus(1)
     count_imu = 0
     while True:
         count_imu += 1

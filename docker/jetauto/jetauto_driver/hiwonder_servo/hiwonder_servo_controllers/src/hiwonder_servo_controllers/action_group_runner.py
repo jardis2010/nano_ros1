@@ -2,7 +2,7 @@
 # encoding: utf-8
 import os
 import rospy
-import ujson
+import json
 import actionlib
 import threading
 from hiwonder_servo_msgs.msg import ActionGroupRunnerAction
@@ -33,7 +33,7 @@ class ActionGroupRunner:
         ret = None
         try:
             with open(path, 'r') as f:
-                content = ujson.loads(f.read())
+                content = json.loads(f.read())
                 actions = content['Actions']
                 acts = []
                 for action in actions:
