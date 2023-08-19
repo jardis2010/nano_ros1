@@ -92,9 +92,4 @@ mkdir -p /catkin_ws/src/jetauto
 # COPY ./jetauto/ /catkin_ws/src/jetauto/
 
 
-# 
-# setup entrypoint
-#
-cp ./packages/ros_entrypoint.sh /ros_entrypoint.sh
-chmod +x /ros_entrypoint.sh
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
