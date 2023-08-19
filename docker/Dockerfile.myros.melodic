@@ -73,7 +73,7 @@ RUN apt-get update && \
 # Install smbus2
 RUN pip install smbus2
 
-RUN pip3 install rospkg catkin_pkg smbus2 Jetson.GPIO
+RUN pip3 install rospkg catkin_pkg smbus2 Jetson.GPIO pyserial
 
 #
 # init/update rosdep
