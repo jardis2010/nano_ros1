@@ -102,6 +102,7 @@ cp -r ./jetauto/ /jetauto_ws/src/
 
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
+
 # 
 # setup entrypoint
 #
