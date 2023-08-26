@@ -9,15 +9,15 @@ from hiwonder_servo_msgs.msg import CommandDuration
 from std_msgs.msg import Float64
 
 class JointController:
-    def __init__(self, servo_io, controller_namespace, port_id):
+    def __init__(self, servo_io, controller_namespace, param_namespace, port_id):
         self.running = False
         self.servo_io = servo_io
         self.controller_namespace = controller_namespace
-        self.param_namespace = "~controllers/" + controller_namespace
+        self.param_namespace = param_namespace
         self.port_id = str(port_id)
         self.joint_name = rospy.get_param(self.param_namespace + '/joint_name')
         self.joint_speed = rospy.get_param(self.param_namespace + '/joint_speed', 1.0)
-    
+
     def initialize(self):
         raise NotImplementedError
 

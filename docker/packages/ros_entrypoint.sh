@@ -27,7 +27,7 @@ echo "ROS_DISTRO $ROS_DISTRO"
 #    && cd /catkin_ws \
 #    && catkin_make
 
-cd /catkin_ws 
+cd /workspace/jetauto_ws 
 catkin_make
 
 source ./devel/setup.bash 
@@ -35,6 +35,8 @@ source ./devel/setup.bash
 #./scripts/create_udev_rules
 
 #roslaunch astra_camera astra_pro_plus.launch
-
+echo 'source /workspace/jetauto_ws/devel/setup.bash' >> ~/.bashrc
+echo 'export MACHINE_TYPE=JetAuto' >> ~/.bashrc
+echo 'export DEPTH_CAMEA_TYPE=AstraPro' >> ~/.bashrc
 
 exec "$@"

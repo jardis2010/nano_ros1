@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 # Date:2021/07/24
-# 串口舵机代码控制例程
+# 串口舵机代码控制例程(serial bus servo control routine)
 import rospy
 import signal
 from hiwonder_servo_msgs.srv import GetServoState 
@@ -24,15 +24,15 @@ if __name__ == '__main__':
 
     signal.signal(signal.SIGINT, shutdown)
 
-    # 发布舵机位置
+    # 发布舵机位置(publish servo position)
     joints_pub = rospy.Publisher('/servo_controllers/port_id_1/multi_id_pos_dur', MultiRawIdPosDur, queue_size=1)
     while running:
         try:
-            # 参数1:发布句柄
-            # 参数2:运行时间(ms)
-            # 参数3:((舵机id, 舵机位置(脉宽)), (舵机id, 舵机位置(脉宽), ...)
+            # 参数1:发布句柄(parameter1: publish handle)
+            # 参数2:运行时间(ms)(parameter2: running time in ms)
+            # 参数3:((舵机id, 舵机位置(脉宽)), (舵机id, 舵机位置(脉宽), ...)(parameter3: ((servo id, servo position(pulse width)), (servo id, servo position(pulse width), ...))
             #set_servos(joints_pub, 500, ((6, 460), (5, 633), (4, 500), (3, 410), (2, 666)))
-            # 延时，等待舵机转到指定位置
+            # 延时，等待舵机转到指定位置(delay. wait for the servo to rotate to specific position)
             #rospy.sleep(0.5)
             
             set_servos(joints_pub, 1000, ((5, 400), ))
@@ -41,7 +41,7 @@ if __name__ == '__main__':
             set_servos(joints_pub, 1000, ((5, 600),))
             rospy.sleep(0.5)
 
-            # 获取舵机当前电压
+            # 获取舵机当前电压(acquire the current voltage of servo)
             res = rospy.ServiceProxy('/servo_control/get_servo_state', GetServoState)('voltage', 5)
             print('voltage: ' + str(round(res.value[0]/1000.0, 1)) + 'V')
         except Exception as e:

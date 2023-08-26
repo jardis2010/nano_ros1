@@ -16,7 +16,8 @@ class ControllerManager:
         self.controllers_by_id = {}
         self.serial_proxies = {}
 
-        serial_ports = rospy.get_param('~serial_ports')
+        self.namespace = rospy.get_param('~namespace', '')
+        serial_ports = rospy.get_param(self.namespace + '/serial_ports')
         
         for serial in serial_ports:
             port_name = serial['port_name']
@@ -30,6 +31,7 @@ class ControllerManager:
 
             serial_proxy = SerialProxy(port_name,
                                        str(port_id),
+                                       self.namespace,
                                        baud_rate,
                                        min_motor_id,
                                        max_motor_id,
@@ -39,7 +41,7 @@ class ControllerManager:
             serial_proxy.connect()
             self.serial_proxies[port_id] = serial_proxy
 
-        items_ = rospy.get_param('~controllers').items()
+        items_ = rospy.get_param(self.namespace + '/controllers').items()
         for ctl_name, ctl_params in items_:
             if ctl_params['type'] == 'JointPositionController':
                 self.start_position_controller(ctl_name, ctl_params)
@@ -47,7 +49,6 @@ class ControllerManager:
         for ctl_name, ctl_params in items_:
             if ctl_params['type'] == 'JointTrajectoryActionController':
                 self.start_trajectory_action_controller(ctl_name, ctl_params)
-        rospy.set_param('~running', True)
 
     def on_shutdown(self):
         for serial_proxy in self.serial_proxies.values():
@@ -77,7 +78,10 @@ class ControllerManager:
             return False
         port_id = str(ctl_params['port_id'])
         if port_id in self.serial_proxies:
-            controller = JointPositionController(self.serial_proxies[port_id].servo_io, ctl_name, port_id)
+            controller = JointPositionController(self.serial_proxies[port_id].servo_io,
+                                                 ctl_name,
+                                                 self.namespace + "/controllers/" + ctl_name,
+                                                 port_id)
             if controller.initialize():
                 controller.start()
                 self.controllers[ctl_name] = controller

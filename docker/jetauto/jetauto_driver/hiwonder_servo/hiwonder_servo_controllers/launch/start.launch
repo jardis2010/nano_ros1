@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="namespace"   default="hiwonder"/>
     <arg name="base_frame"  default="base_link"/>
-    <include file="$(find hiwonder_servo_controllers)/launch/controller_manager.launch"/>
+    <include file="$(find hiwonder_servo_controllers)/launch/controller_manager.launch">
+        <arg name="namespace"   value="$(arg namespace)"/>
+    </include>
 
     <include file="$(find hiwonder_servo_controllers)/launch/joint_states_publisher.launch">
+        <arg name="namespace"   value="$(arg namespace)"/>
         <arg name="base_frame"  value="$(arg base_frame)"/>
     </include>
 </launch>

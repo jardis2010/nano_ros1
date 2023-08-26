@@ -19,21 +19,21 @@ else:
     import Jetson.GPIO as GPIO
 
 def port_as_write():
-    GPIO.output(tx_pin, 1)  # 拉高TX_CON 即 GPIO27
-    GPIO.output(rx_pin, 0)  # 拉低RX_CON 即 GPIO17
+    GPIO.output(tx_pin, 1)  # Pull high TX_CON i.e. GPIO27
+    GPIO.output(rx_pin, 0)  # Pull down RX_CON i.e. GPIO17
 
 def port_as_read():
-    GPIO.output(rx_pin, 1)  # 拉高RX_CON 即 GPIO17
-    GPIO.output(tx_pin, 0)  # 拉低TX_CON 即 GPIO27
+    GPIO.output(rx_pin, 1)  # Pull high RX_CON i.e. GPIO17
+    GPIO.output(tx_pin, 0)  # Pull down TX_CON i.e. GPIO27
 
 def port_init():
     GPIO.setwarnings(False)
     mode = GPIO.getmode()
     if mode == 1 or mode is None:
         GPIO.setmode(GPIO.BCM)
-    GPIO.setup(rx_pin, GPIO.OUT)  # 配置RX_CON 即 GPIO17 为输出
+    GPIO.setup(rx_pin, GPIO.OUT)  # configure RX_CON i.e. GPIO17 as output
     GPIO.output(rx_pin, 0)
-    GPIO.setup(tx_pin, GPIO.OUT)  # 配置TX_CON 即 GPIO27 为输出
+    GPIO.setup(tx_pin, GPIO.OUT)  # configure TX_CON i.e. GPIO27 as output
     GPIO.output(tx_pin, 1)
 
 port_init()
@@ -103,7 +103,7 @@ class HiwonderServoIO:
         # Number of bytes following standard header (0xFF, 0xFF, id, length)
         length = 3  # instruction, address, size, checksum
 
-        ##计算校验和
+        ##计算校验和(calculate the checksum)
         checksum = 255 - ((servo_id + length + cmd) % 256)
         # packet: 0x55  0x55  ID LENGTH INSTRUCTION PARAM_1 ... CHECKSUM
         packet = [0x55, 0x55, servo_id, length, cmd, checksum]
@@ -202,23 +202,23 @@ class HiwonderServoIO:
 
     def set_servo_id(self, oldid, newid):
         '''
-        配置舵机id号, 出厂默认为1
-        :param oldid: 原来的id， 出厂默认为1
-        :param newid: 新的id
+        配置舵机id号, 出厂默认为1(configure the servo id which is 1 by default)
+        :param oldid: 原来的id， 出厂默认为1(param oldid: original id. It is 1 by default)
+        :param newid: 新的id(param newid: new id)
         '''
         self.write(oldid, HIWONDER_SERVO_ID_WRITE, (newid, ))
     
     def get_servo_id(self, servo_id=None):
         '''
-        读取串口舵机id
-        :param id: 默认为空
-        :return: 返回舵机id
+        读取串口舵机id(read the id of serial servo)
+        :param id: 默认为空(param id: none by default)
+        :return: 返回舵机id(return: return servo id)
         '''
         count = 0
         while True:
             count += 1
             response = None
-            if servo_id is None:  # 总线上只能有一个舵机
+            if servo_id is None:  # 总线上只能有一个舵机(there is only one servo on the bus)
                 response = self.read(0xfe, HIWONDER_SERVO_ID_READ)
             else:
                 response = self.read(servo_id, HIWONDER_SERVO_ID_READ)
@@ -232,10 +232,10 @@ class HiwonderServoIO:
 
     def set_position(self, servo_id, position, duration=None):
         """
-        驱动串口舵机转到指定位置
-        :param id: 要驱动的舵机id
-        :pulse: 位置
-        :use_time: 转动需要的时间
+        驱动串口舵机转到指定位置(drive the serial servo to rotate to the designated position)
+        :param id: 要驱动的舵机id(param id: servo id to be driven)
+        :pulse: 位置(pulse: position)
+        :use_time: 转动需要的时间(use_time: time taken for rotation)
         """
         # print("id:{}, pos:{}, duration:{}".format(servo_id, position, duration))
         servo = self.servos[servo_id]
@@ -256,7 +256,7 @@ class HiwonderServoIO:
 
     def stop(self, servo_id):
         '''
-        停止舵机运行
+        停止舵机运行(stop servo rotation)
         :param id:
         :return:
         '''
@@ -264,26 +264,26 @@ class HiwonderServoIO:
 
     def set_servo_deviation(self, servo_id, dev=0):
         '''
-        调整偏差
-        :param id: 舵机id
-        :param d:  偏差
+        调整偏差(adjust deviation)
+        :param id: 舵机id(param id: servo id)
+        :param d:  偏差(param d:  deviation)
         '''
         self.write(servo_id, HIWONDER_SERVO_ANGLE_OFFSET_ADJUST, (dev, ))
 
     def save_servo_deviation(self, servo_id):
         '''
-        配置偏差，掉电保护
-        :param id: 舵机id
+        配置偏差，掉电保护(configure deviation, power loss protection)
+        :param id: 舵机id(param id: servo id)
         '''
         self.write(servo_id, HIWONDER_SERVO_ANGLE_OFFSET_WRITE, ())
         
     def get_servo_deviation(self, servo_id):
         '''
-        读取偏差值
-        :param id: 舵机号
+        读取偏差值(read deviation value)
+        :param id: 舵机号(param id: servo ID)
         :return:
         '''
-        # 发送读取偏差指令
+        # 发送读取偏差指令(send the command of reading the deviation)
         count = 0
         while True:
             count += 1
@@ -298,7 +298,7 @@ class HiwonderServoIO:
 
     def set_servo_range(self, servo_id, low, high):
         '''
-        设置舵机转动范围
+        设置舵机转动范围(set the servo rotation range)
         :param id:
         :param low:
         :param high:
@@ -325,9 +325,9 @@ class HiwonderServoIO:
 
     def get_servo_range(self, servo_id):
         '''
-        读取舵机转动范围
+        读取舵机转动范围(read the servo rotation range)
         :param id:
-        :return: 返回元祖 0： 低位  1： 高位
+        :return: 返回元祖 0： 低位  1： 高位(return: return tuple 0： low-bit  1： high-bit)
         '''
         count = 0
         while True:
@@ -343,7 +343,7 @@ class HiwonderServoIO:
 
     def set_servo_vin_range(self, servo_id, low, high):
         '''
-        设置舵机电压范围
+        设置舵机电压范围(set the servo voltage range)
         :param id:
         :param low:
         :param high:
@@ -359,9 +359,9 @@ class HiwonderServoIO:
 
     def get_servo_vin_range(self, servo_id):
         '''
-        读取舵机转动范围
+        读取舵机转动范围(read the servo rotation range)
         :param id:
-        :return: 返回元祖 0： 低位  1： 高位
+        :return: 返回元祖 0： 低位  1： 高位(return: return tuple 0： low-bit  1： high-bit)
         '''
         count = 0
         while True:
@@ -376,7 +376,7 @@ class HiwonderServoIO:
 
     def set_servo_temp_range(self, servo_id, m_temp):
         '''
-        设置舵机最高温度报警
+        设置舵机最高温度报警(set the highest temperature alarm of the servo)
         :param id:
         :param m_temp:
         :return:
@@ -385,7 +385,7 @@ class HiwonderServoIO:
 
     def get_servo_temp_range(self, servo_id):
         '''
-        读取舵机温度报警范围
+        读取舵机温度报警范围(read the servo temperature alarm range)
         :param id:
         :return:
         '''
@@ -403,7 +403,7 @@ class HiwonderServoIO:
 
     def get_servo_temp(self, servo_id):
         '''
-        读取舵机温度
+        读取舵机温度(read the servo temperature)
         :param id:
         :return:
         '''
@@ -421,7 +421,7 @@ class HiwonderServoIO:
 
     def get_servo_vin(self, servo_id):
         '''
-        读取舵机电压
+        读取舵机电压(read the servo voltage)
         :param id:
         :return:
         '''
@@ -438,10 +438,10 @@ class HiwonderServoIO:
                 return None
 
     def reset(self, servo_id):
-        # 舵机清零偏差和P值中位（500）
-        self.set_deviation(servo_id, 0)    # 清零偏差
+        # 舵机清零偏差和P值中位（500）(clear servo deviation and center p value(500))
+        self.set_deviation(servo_id, 0)    # 清零偏差 (clear deviation)
         time.sleep(0.1)
-        self.write(servo_id, HIWONDER_SERVO_MOVE_TIME_WRITE, 500, 100)    # 中位
+        self.write(servo_id, HIWONDER_SERVO_MOVE_TIME_WRITE, 500, 100)    # 中位(center servo)
 
     def unload_servo(self, servo_id):
         self.write(servo_id, HIWONDER_SERVO_LOAD_OR_UNLOAD_WRITE, (0, ))

@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 import rospy
-from hiwonder_servo_msgs.msg import JointState
 from hiwonder_servo_driver.hiwonder_servo_const import *
 from hiwonder_servo_controllers.joint_controller import JointController
+from hiwonder_servo_msgs.msg import JointState
 
 class JointPositionController(JointController):
-    def __init__(self, servo_io, controller_namespace, port_id):
-        JointController.__init__(self, servo_io, controller_namespace, port_id)
+    def __init__(self, servo_io, controller_namespace, param_namespace, port_id):
+        JointController.__init__(self, servo_io, controller_namespace, param_namespace, port_id)
 
-        self.param_namespace = "~controllers/" + controller_namespace
+        self.controller_namespace = controller_namespace
+        self.param_namespace = param_namespace
         self.port_id = str(port_id)
 
         self.servo_id = rospy.get_param(self.param_namespace + '/servo/id')

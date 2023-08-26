@@ -2,7 +2,7 @@
 # encoding: utf-8
 import os
 import rospy
-import json
+import ujson
 import actionlib
 import threading
 from hiwonder_servo_msgs.msg import ActionGroupRunnerAction
@@ -26,14 +26,14 @@ class ActionGroupRunner:
                                                           execute_cb=self.process_action_group_run, auto_start=False)
 
     """
-        检查文件是否为合法的动作组文件
+        检查文件是否为合法的动作组文件(Check whether the file is valid)
     """
     def get_actions_from_file(self, file_name):
         path = os.path.join(self.path, file_name)
         ret = None
         try:
             with open(path, 'r') as f:
-                content = json.loads(f.read())
+                content = ujson.loads(f.read())
                 actions = content['Actions']
                 acts = []
                 for action in actions:
@@ -75,7 +75,7 @@ class ActionGroupRunner:
         self._feedback.name = name
         self._result.name = name
 
-        '''所有动作组文件均以".json"结束，对不以".json"结束的动作组尝试运行命令，命令若有参数需要传入的使用'|'符号将命令与参数分隔'''
+        '''所有动作组文件均以".json"结束，对不以".json"结束的动作组尝试运行命令，命令若有参数需要传入的使用'|'符号将命令与参数分隔(all the action files end with ".json". For the files that not end with ".json", command will be ran. If there is parameters in the commands, command and parameter should be separated by '|')'''
         print(name)
         print(repeat)
         success = 0

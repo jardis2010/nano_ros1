@@ -34,17 +34,21 @@ apt-get update && \
 		ros-melodic-`echo "${ROS_PKG}" | tr '_' '-'` \
 		ros-melodic-image-transport \
 		ros-melodic-vision-msgs \
+        ros-melodic-urdf \
+        ros-melodic-xacro \
         python-rosdep \
         python-rosinstall \
         python-rosinstall-generator \
         python-wstool \
         usbutils \
+        python-pip \
         python3-pip \
         python3-yaml \
         python3-opencv \
         python3-setuptools \
     && rm -rf /var/lib/apt/lists/*
 
+pip install smbus2
 pip3 install rospkg catkin_pkg smbus2 Jetson.GPIO pyserial
 
 #
@@ -66,10 +70,9 @@ apt-get install -y \
     ros-melodic-control-msgs \
     ros-melodic-rviz
  
-# Build Catkin workspace
-cd /workspace \
-     && mkdir -p /catkin_ws/src 
- 
+# Install Gazebo
+curl -sSL http://get.gazebosim.org | sh
+
 # for Orbbrc Astra Camera
 # - dependencies
 apt install  -y libgflags-dev ros-$ROS_DISTRO-image-geometry ros-$ROS_DISTRO-camera-info-manager \
@@ -82,19 +85,28 @@ git clone https://github.com/libuvc/libuvc.git  \
     && cd libuvc  \
     && mkdir build  &&  cd build  \
     && cmake .. && make -j4  \
-    && make install && ldconfig
+    && sudo make install && sudo ldconfig
  
-mkdir -p /catkin_ws/src/third_party && cd /catkin_ws/src/third_party \
+# Build Catkin workspace
+mkdir /workspace \
+     && mkdir -p /jetauto_ws/src 
+
+mkdir -p /jetauto_ws/src/third_party && cd /jetauto_ws/src/third_party \
      && git clone https://github.com/orbbec/ros_astra_camera.git 
 
-# make a directory for my robot
-mkdir -p /catkin_ws/src/jetauto
-# COPY ./jetauto/ /catkin_ws/src/jetauto/
+# IMPORTANT: comment out the mjpeg2rgb function call in uvc_camera_driver.cpp in ros_astra_camera
 
+# jetauto content copy
+cp -r ./jetauto/ /jetauto_ws/src/
+
+
+echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
 # 
 # setup entrypoint
 #
 cp ./packages/ros_entrypoint.sh /ros_entrypoint.sh
 chmod +x /ros_entrypoint.sh
-echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+
+
+source /ros_entrypoint.sh

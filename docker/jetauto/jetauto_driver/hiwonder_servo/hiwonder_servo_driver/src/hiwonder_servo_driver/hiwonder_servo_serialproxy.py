@@ -15,6 +15,7 @@ class SerialProxy:
     def __init__(self,
                  port_name='/dev/ttyTHS1',
                  port_id= 1,
+                 namespace="",
                  baud_rate='115200',
                  min_motor_id=1,
                  max_motor_id=25,
@@ -23,6 +24,7 @@ class SerialProxy:
                  fake_read=False):
 
         self.port_name = port_name
+        self.namespace = namespace
         self.port_id = str(port_id)
         self.baud_rate = baud_rate
         self.min_servo_id = min_motor_id
@@ -47,8 +49,8 @@ class SerialProxy:
                                                   MultiRawIdPosDur,
                                                   self.multi_id_pos_dur_cb)
         rospy.Subscriber('servo_control/set_servo_state', SetServoState, self.set_servo_state)
-        rospy.Service('servo_control/get_servo_state', GetServoState, self.get_servo_state)
-        rospy.Service('servo_control/set_read_timeout', SetReadTimeout, self.set_read_timeout)
+        rospy.Service(self.namespace + '/servo_control/get_servo_state', GetServoState, self.get_servo_state)
+        rospy.Service(self.namespace + '/servo_control/set_read_timeout', SetReadTimeout, self.set_read_timeout)
 
     def set_read_timeout(self, msg):
         self.servo_io.set_timeout(msg.data)

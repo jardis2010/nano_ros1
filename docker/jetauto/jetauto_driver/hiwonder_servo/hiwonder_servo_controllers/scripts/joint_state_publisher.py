@@ -16,12 +16,13 @@ class JointStatePublisher:
         rospy.init_node('hiwonder_joint_state_publisher', anonymous=True)
 
         rate = rospy.get_param('~rate', 50)
-        machine_type = rospy.get_param('~machine_type', 'JetAuto')
+        machine_type = rospy.get_param('~machine_type', 'jetauto_omni')
+        self.namespace = rospy.get_param('~namespace', '')
         self.base_frame = rospy.get_param('~base_frame', 'base_link')
         
         r = rospy.Rate(rate)
         
-        if machine_type != 'JetAutoPro':
+        if machine_type == 'jetauto_omni':
             self.joints = ['joint1']
         else:
             self.joints = ['joint1', 'joint2', 'joint3', 'joint4', 'r_joint']
@@ -29,19 +30,19 @@ class JointStatePublisher:
         self.servos = []
         self.controllers = []
         self.joint_states = {}
+
         for controller in sorted(self.joints):
             self.joint_states[controller] = JointStateMessage(controller, 0.0, 0.0, 0.0)
             self.controllers.append(controller)
-        
+
         # Start controller state subscribers
-        [rospy.Subscriber(c + '_controller'+'/state', HiwonderJointState, self.controller_state_handler) for c in self.controllers]
+        [rospy.Subscriber(self.namespace + '/' + c + '_controller'+'/state', HiwonderJointState, self.controller_state_handler) for c in self.controllers]
 
         # Start publisher
         self.joint_states_pub = rospy.Publisher('joint_states', RosJointState, queue_size=1)
 
         rospy.loginfo("Starting Joint State Publisher at " + str(rate) + "Hz")
-        
-        rospy.set_param('~running', True)
+
         while not rospy.is_shutdown():
             self.publish_joint_states()
             r.sleep()
