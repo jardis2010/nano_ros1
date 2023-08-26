@@ -68,6 +68,7 @@ apt-get install -y \
     ros-melodic-tf* \
     ros-melodic-joy \
     ros-melodic-control-msgs \
+    ros-melodic-costmap-2d \
     ros-melodic-rviz
  
 # Install Gazebo
