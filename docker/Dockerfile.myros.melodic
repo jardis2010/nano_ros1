@@ -58,12 +58,20 @@ RUN apt-get update && \
 		ros-melodic-`echo "${ROS_PKG}" | tr '_' '-'` \
 		ros-melodic-image-transport \
 		ros-melodic-vision-msgs \
+        ros-melodic-vision-opencv \
+        ros-melodic-tf* \
+        ros-melodic-joy \
+        ros-melodic-control-msgs \
+        ros-melodic-rviz \
+        ros-melodic-urdf \
+        ros-melodic-xacro \
         python-rosdep \
         python-rosinstall \
         python-rosinstall-generator \
         python-wstool \
         python-pip \
         usbutils \
+        libjpeg-dev \
         python3-pip \
         python3-yaml \
         python3-opencv \
@@ -84,15 +92,7 @@ RUN apt-get update && \
     rosdep fix-permissions && \
     rosdep update && \
     rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update 
-RUN apt-get upgrade -y
-RUN apt-get install -y \
-    ros-melodic-vision-opencv \
-    ros-melodic-tf* \
-    ros-melodic-joy \
-    ros-melodic-control-msgs \
-    ros-melodic-rviz
+    
  
 # Build Catkin workspace
 RUN cd /workspace \

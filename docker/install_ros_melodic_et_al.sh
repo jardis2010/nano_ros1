@@ -34,6 +34,12 @@ apt-get update && \
 		ros-melodic-`echo "${ROS_PKG}" | tr '_' '-'` \
 		ros-melodic-image-transport \
 		ros-melodic-vision-msgs \
+        ros-melodic-vision-opencv \
+        ros-melodic-tf* \
+        ros-melodic-joy \
+        ros-melodic-control-msgs \
+        ros-melodic-costmap-2d \
+        ros-melodic-rviz \
         ros-melodic-urdf \
         ros-melodic-xacro \
         python-rosdep \
@@ -41,6 +47,7 @@ apt-get update && \
         python-rosinstall-generator \
         python-wstool \
         usbutils \
+        libjpeg-dev \
         python-pip \
         python3-pip \
         python3-yaml \
@@ -63,13 +70,6 @@ apt-get update && \
 
 apt-get update 
 apt-get upgrade -y
-apt-get install -y \
-    ros-melodic-vision-opencv \
-    ros-melodic-tf* \
-    ros-melodic-joy \
-    ros-melodic-control-msgs \
-    ros-melodic-costmap-2d \
-    ros-melodic-rviz
  
 # Install Gazebo
 curl -sSL http://get.gazebosim.org | sh
