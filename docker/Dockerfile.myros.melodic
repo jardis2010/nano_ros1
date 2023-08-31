@@ -65,6 +65,8 @@ RUN apt-get update && \
         ros-melodic-rviz \
         ros-melodic-urdf \
         ros-melodic-xacro \
+        libgazebo9 \
+        ros-melodic-gazebo-ros \
         python-rosdep \
         python-rosinstall \
         python-rosinstall-generator \

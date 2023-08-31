@@ -36,7 +36,9 @@ source ./devel/setup.bash
 
 #roslaunch astra_camera astra_pro_plus.launch
 echo 'source /workspace/jetauto_ws/devel/setup.bash' >> ~/.bashrc
+echo 'export HOST=jetauto_1' >> ~/.bashrc
 echo 'export MACHINE_TYPE=JetAuto' >> ~/.bashrc
-echo 'export DEPTH_CAMEA_TYPE=AstraPro' >> ~/.bashrc
+echo 'export DEPTH_CAMEA_TYPE=AstraProPlus' >> ~/.bashrc
+echo 'export LIDAR_TYPE=A1' >> ~/.bashrc
 
 exec "$@"
