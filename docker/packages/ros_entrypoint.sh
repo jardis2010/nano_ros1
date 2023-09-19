@@ -35,10 +35,11 @@ source ./devel/setup.bash
 #./scripts/create_udev_rules
 
 #roslaunch astra_camera astra_pro_plus.launch
-echo 'source /workspace/jetauto_ws/devel/setup.bash' >> ~/.bashrc
+echo 'source ~/workspace/jetauto_ws/devel/setup.bash' >> ~/.bashrc
 echo 'export HOST=jetauto_1' >> ~/.bashrc
-echo 'export MACHINE_TYPE=JetAuto' >> ~/.bashrc
-echo 'export DEPTH_CAMEA_TYPE=AstraProPlus' >> ~/.bashrc
+echo 'export MASTER=jetauto_1' >> ~/.bashrc
+echo 'export MACHINE_TYPE=jetauto_omni' >> ~/.bashrc
+echo 'export DEPTH_CAMERA_TYPE=AstraProPlus' >> ~/.bashrc
 echo 'export LIDAR_TYPE=A1' >> ~/.bashrc
 
 exec "$@"
