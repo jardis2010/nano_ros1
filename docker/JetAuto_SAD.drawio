@@ -1,0 +1,44 @@
+<mxfile host="app.diagrams.net" modified="2023-10-11T17:35:10.618Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="iu0N77a5k5wqX7dNY0yc" version="22.0.4" type="device">
+  <diagram name="Page-1" id="ZWHbOlTLH1LeNqnhKdkU">
+    <mxGraphModel dx="1185" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="V49qtye7fXuTysOBp5RV-2" value="JetAutoController&lt;br&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;jetauto_controller_main.py&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="550" y="760" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-3" value="Mecanum Chassis&lt;br&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;mecanum.py&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;imageAlign=center;" vertex="1" parent="1">
+          <mxGeometry x="550" y="880" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-4" value="EncoderMotorController&lt;br&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;encoder_motor.py&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="550" y="1000" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="V49qtye7fXuTysOBp5RV-2" target="V49qtye7fXuTysOBp5RV-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="550" y="600" as="sourcePoint" />
+            <mxPoint x="600" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="635" y="860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-8" value="reset_motors()&lt;br&gt;set_velocity()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="V49qtye7fXuTysOBp5RV-6">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-10" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="V49qtye7fXuTysOBp5RV-3" target="V49qtye7fXuTysOBp5RV-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="550" y="600" as="sourcePoint" />
+            <mxPoint x="600" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="V49qtye7fXuTysOBp5RV-11" value="set_speed()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="V49qtye7fXuTysOBp5RV-10">
+          <mxGeometry x="-0.2786" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

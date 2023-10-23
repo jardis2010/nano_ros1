@@ -38,6 +38,9 @@ curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key
 # apt-get update && \
 #   apt-get install -y --no-install-recommends \
 #   ros-melodic-map-server
+#   ros-melodic-navigation
+#   ros-melodic-slam-gmapping
+#   ros-melodic-teb-local-planner
 
 
 apt-get update && \
@@ -59,7 +62,10 @@ apt-get update && \
         ros-melodic-joint-state-publisher-gui \
         ros-melodic-robot-state-publisher \
         ros-melodic-laser-filters \
-        ros-melodic-gmapping \
+        ros-melodic-navigation \
+        ros-melodic-gmapping
+        ros-melodic-slam-gmapping \
+        ros-melodic-teb-local-planner \
         libgazebo9 \
         ros-melodic-gazebo-ros \
         ros-melodic-gazebo-ros-pkgs \

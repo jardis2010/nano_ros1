@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="depth_camera_name" default="camera"/>
+    <node name="orb_slam2_mono" pkg="ORB_SLAM2" type="Mono" output="screen" args="$(find ORB_SLAM2)/../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM2)/../../Monocular/TUM1.yaml">
+        <remap from="/camera/image_raw"     to="/$(arg depth_camera_name)/rgb/image_raw" />
+        <remap from="/camera/camera_info"   to="/$(arg depth_camera_name)/rgb/camera_info" />
+    </node>
+</launch>
