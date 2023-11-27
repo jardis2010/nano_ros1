@@ -1,12 +1,11 @@
 [Unit]
-Description=clear log
+Description=fan control
 
 [Service]
 Type=simple
-User=jetauto
 Restart=always
 RestartSec=10
-ExecStart=/home/jetauto/jetauto_ws/src/jetauto_bringup/scripts/clear_log.py
+ExecStart=/home/jetauto/jetauto_ws/src/jetauto_bringup/scripts/fan_control.py
 StandardOutput=null
 StandardError=null
 

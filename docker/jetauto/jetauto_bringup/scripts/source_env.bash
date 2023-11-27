@@ -7,8 +7,8 @@ export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
 export ROS_IP=localhost
-export ROS_MASTER_URI=http://localhost:11311
-export ROS_HOSTNAME=localhost
+export ROS_MASTER_URI=http://$ROS_IP:11311
+export ROS_HOSTNAME=$ROS_IP
 
 if [ $ZSH_VERSION ]; then
   . /opt/ros/melodic/setup.zsh
