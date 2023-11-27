@@ -77,6 +77,9 @@ def h_gesture(angle_list):
     elif (angle_list[0] > thr_angle_thumb) and (angle_list[1] < thr_angle_s) and (angle_list[2] < thr_angle_s) and (
             angle_list[3] < thr_angle_s) and (angle_list[4] > thr_angle):
         gesture_str = "three"
+    elif (angle_list[0] < thr_angle_thumb) and (angle_list[1] < thr_angle_s) and (angle_list[2] < thr_angle_s) and (
+            angle_list[3] > thr_angle) and (angle_list[4] > thr_angle):
+        gesture_str = "three"
     elif (angle_list[0] > thr_angle_thumb) and (angle_list[1] > thr_angle) and (angle_list[2] < thr_angle_s) and (
             angle_list[3] < thr_angle_s) and (angle_list[4] < thr_angle_s):
         gesture_str = "OK"
@@ -89,6 +92,9 @@ def h_gesture(angle_list):
     elif (angle_list[0] < thr_angle_s) and (angle_list[1] > thr_angle) and (angle_list[2] > thr_angle) and (
             angle_list[3] > thr_angle) and (angle_list[4] < thr_angle_s):
         gesture_str = "six"
+    elif (angle_list[0] > thr_angle_s) and (angle_list[1] > thr_angle) and (angle_list[2] < thr_angle) and (
+            angle_list[3] > thr_angle) and (angle_list[4] > thr_angle_s):
+        gesture_str = "fU2"
     else:
         "none"
     return gesture_str
@@ -100,7 +106,7 @@ class State(enum.Enum):
     RUNNING = 3
 
 def draw_points(img, points, thickness=4, color=(255, 0, 0)):
-    points = np.array(points).astype(dtype=np.int)
+    points = np.array(points).astype(dtype=np.int64)
     if len(points) > 2:
         for i, p in enumerate(points):
             if i + 1 >= len(points):
@@ -122,7 +128,8 @@ class HandGestureNode:
         self.state = State.NULL
         self.points = []
         self.count = 0
-        self.cap = cv2.VideoCapture('/dev/usb_cam')
+        #self.cap = cv2.VideoCapture('/dev/usb_cam')
+        self.cap = cv2.VideoCapture(0)
         self.image_proc()
 
     def image_proc(self):
@@ -133,6 +140,7 @@ class HandGestureNode:
                 result_image = image_flip.copy()
                 try:
                     results = self.hand_detector.process(image_flip)
+                    gesture = ""
                     if results is not None and results.multi_hand_landmarks:
                         gesture = "none"
                         index_finger_tip = [0, 0]
@@ -174,6 +182,7 @@ class HandGestureNode:
                     self.fps.update()
                     result_image = self.fps.show_fps(result_image)
                     result_image = cv2.cvtColor(result_image, cv2.COLOR_RGB2BGR)
+                    cv2.putText(result_image, gesture, (10,450), cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
                     cv2.imshow('hand_gesture', cv2.resize(result_image, (640, 480)))
                     key = cv2.waitKey(1)
                     if key != -1:
