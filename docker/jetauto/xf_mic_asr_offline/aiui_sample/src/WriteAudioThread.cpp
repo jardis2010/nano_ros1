@@ -7,7 +7,7 @@ bool WriteAudioThread::threadLoop()
 
 	if (len > 0)
 	{
-		Buffer* buffer = Buffer::alloc(len);//申请的内存会在sdk内部释放(the applied storage will be released in sdk)
+		Buffer* buffer = Buffer::alloc(len);//申请的内存会在sdk内部释放
 		memcpy(buffer->data(), audio, len);
 
 		IAIUIMessage * writeMsg = IAIUIMessage::create(AIUIConstant::CMD_WRITE,

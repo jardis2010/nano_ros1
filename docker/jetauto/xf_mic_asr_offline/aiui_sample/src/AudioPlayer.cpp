@@ -131,7 +131,7 @@ int xrun_recovery(snd_pcm_t *handle, int err)
 void AudioPlayer::Write(unsigned char *buf, int buf_len)
 {
 	int err;
-	err = snd_pcm_writei(handle, buf, buf_len / 2); //采样位数(sampling bits)/8*声道数,frame不是buffer数据的字节数， 而是采样数,一帧两次采样(8*amount of sound channel. Frame is not bit number for buffer data, but sampling number. two sampling in one frame)
+	err = snd_pcm_writei(handle, buf, buf_len / 2); //采样位数/8*声道数,frame不是buffer数据的字节数， 而是采样数,一帧两次采样
 	err = xrun_recovery(handle, err);
 	if (err < 0)
 	{

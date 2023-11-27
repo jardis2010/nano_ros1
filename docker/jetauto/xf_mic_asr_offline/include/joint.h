@@ -11,7 +11,7 @@ std::string head = "aplay -D plughw:CARD=Device,DEV=0 ";
 
 std::string audio_path = "";
 
-//字符串与字符数组拼接(combine string and character array)
+//字符串与字符数组拼接
 char *join(std::string b, char *s2)
 {
 	char s1[600] = "";
@@ -21,7 +21,7 @@ char *join(std::string b, char *s2)
 	}
 	catch (...)
 	{
-		cout << ">>>>>join拷贝失败(join copy failed)" << endl;
+		cout << ">>>>>join拷贝失败" << endl;
 	}
 	char *result = (char *)malloc(strlen(s1) + strlen(s2) + 1);
 	if (result == NULL)
@@ -34,7 +34,7 @@ char *join(std::string b, char *s2)
 	}
 	catch (...)
 	{
-		cout << ">>>>>join拷贝失败(join copy failed)" << endl;
+		cout << ">>>>>join拷贝失败" << endl;
 	}
 	return result;
 }

@@ -98,25 +98,25 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 		{
             whether_set_resource_info(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x02) //3605D请求下载文件(3605D requests to download the files)
+		else if (businessMsg.msgId == 0x02) //3605D请求下载文件
 		{
 			char* fileName = "../tmp/system.tar";
 			send_resource_info(fileName,1);
 		}
-		else if (businessMsg.msgId == 0x03) //文件接收结果(receiving result of the files)
+		else if (businessMsg.msgId == 0x03) //文件接收结果
 		{
             whether_set_resource_info(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x05) //3605D请求下载文件(3605D requests to download the files)
+		else if (businessMsg.msgId == 0x05) //3605D请求下载文件
 		{
             char fileName[] = "../tmp/system.tar";
 			send_resource(businessMsg.data,fileName,1);
 		}
-		else if (businessMsg.msgId == 0x04) //3605D上报升级结果(3605D reports the upgrade result)
+		else if (businessMsg.msgId == 0x04) //3605D上报升级结果
 		{
 			whether_upgrade_succeed(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x08) //获取升级配置文件(obtain the upgraded configuration files)
+		else if (businessMsg.msgId == 0x08) //获取升级配置文件
 		{
 			printf("config.json: %s", businessMsg.data);
 		}

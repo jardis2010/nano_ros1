@@ -2,9 +2,9 @@
 #define CONSTANTS_X_H_
 
 #define TEST_ROOT_DIR "./AIUI/"
-//配置文件打的路径，里面是客户端设置的参数(path for configuration file where parameters set by client are stored)
+//配置文件打的路径，里面是客户端设置的参数
 #define CFG_FILE_PATH "../config/AIUI/cfg/aiui.cfg"
-//测试音频的路径(path for test audio)
+//测试音频的路径
 #define TEST_AUDIO_PATH "../config/AIUI/audio/test.pcm"
 
 #define GRAMMAR_FILE_PATH "../config/AIUI/asr/call.bnf"

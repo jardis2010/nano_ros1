@@ -9,7 +9,7 @@ IAIUIAgent* globalAgent;
 AudioPlayer* globalAudioPlayer;
 bool if_print_proc_log = false;
 bool if_print_event_log = false;
-bool if_save_record_file = false; //是否保存音频到本地(whether to save the audio to local)
+bool if_save_record_file = false; //是否保存音频到本地
 bool wait_for_awake_word = false;
 bool no_tts = false;
 // class Global

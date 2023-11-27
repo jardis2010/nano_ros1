@@ -10,7 +10,7 @@
 #include <string.h>
 
 
-//写test.pcm测试音频线程(write test.pcm audio test thread)
+//写test.pcm测试音频线程
 class WriteAudioThread
 {
 private:

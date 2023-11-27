@@ -32,14 +32,14 @@ extern "C"
 	unsigned short VID;
 	unsigned short PID;
 	char *device_index = (char *)"iflytek";
-	int is_reboot = 0; //是否重启(whether to reboot)
-	int is_boot = 0;   //是否启动(whether to boot)
-	int major_mic_id = -1;//主麦克风id,在未设置主麦前，其为-1，表示无主麦(microphone id. It is -1 before the main microphone is not set, which means that these is no main microphone)
-	int led_id = 0;						   //当前要点亮灯光(the light to light up)
-	int mic_angle = 0;					   //当前唤醒角度(current wake-up angle)
-	int if_awake = 0;					   //是否被唤醒(whether it is awaken)
-	int record_count = 0;				   //仅在录音时点亮灯光(the light is on only when recording)
-	int mic_open_status =0;//麦克风设备打开状态，０表示找到麦克风并打开，-1表示没只找到，-2表示找到设备，但已被占用．(microphone status. 0 represents microphone is found and turned on. -1 represents the device is not found. -2 represents device is found, but occupied)
+	int is_reboot = 0; //是否重启
+	int is_boot = 0;   //是否启动
+	int major_mic_id = -1;//主麦克风id,在未设置主麦前，其为-1，表示无主麦
+	int led_id = 0;						   //当前要点亮灯光
+	int mic_angle = 0;					   //当前唤醒角度
+	int if_awake = 0;					   //是否被唤醒
+	int record_count = 0;				   //仅在录音时点亮灯光
+	int mic_open_status =0;//麦克风设备打开状态，０表示找到麦克风并打开，-1表示没只找到，-2表示找到设备，但已被占用．
 	typedef struct hid_device_ hid_device; /**< opaque hidapi structure */
 	/** hidapi info structure */
 	struct hid_device_info
@@ -91,7 +91,7 @@ extern "C"
 	/*获取并保存降噪后音频文件到指定目录 */
 	int get_denoised_sound(char *fileName, unsigned char *data);
 	/*设置主麦方向并点亮灯光-不建议使用*/
-	void set_major_mic_led_on(int id, int led_id); //预留,可不用(reserve. or don't use it)
+	void set_major_mic_led_on(int id, int led_id); //预留,可不用
 	/*设置主麦方向*/
 	int set_major_mic_id(int id);
 	/*设置灯光点亮*/

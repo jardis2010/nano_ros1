@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-# @Author: Aiden
-# @Date: 2022/09/14
+# @data:2022/11/07
+# @author:aiden
+# 语音开启颜色检测
+import os
 import json
 import rospy
 import signal
 from jetauto_sdk import buzzer
 from std_msgs.msg import String
 from xf_mic_asr_offline import voice_play
-from jetauto_interfaces.msg import ColorsInfo, ColorDetect
 from jetauto_interfaces.srv import SetColorDetectParam
+from jetauto_interfaces.msg import ColorsInfo, ColorDetect
 
 class VoiceControlColorDetectNode:
     def __init__(self, name):
@@ -20,24 +22,34 @@ class VoiceControlColorDetectNode:
         self.last_color = None 
         signal.signal(signal.SIGINT, self.shutdown)
         
+        self.language = os.environ['LANGUAGE']
         rospy.Subscriber('/voice_words', String, self.words_callback)
         rospy.Subscriber('/color_detect/color_info', ColorsInfo, self.get_color_callback)
-        voice_play.play('running')
-       
-        rospy.loginfo('唤醒口令: 小幻小幻()')
-        rospy.loginfo('唤醒后15秒内可以不用再唤醒')
-        rospy.loginfo('控制指令: 开启颜色识别 关闭颜色识别')
-
+        while not rospy.is_shutdown():
+            try:
+                if rospy.get_param('/xf_asr_offline_node/start') and rospy.get_param('/color_detect/start'):
+                    break
+            except:
+                rospy.sleep(0.1)         
+        self.play('running')
+        
+        rospy.loginfo('唤醒口令: 小幻小幻(Wake up word: hello hiwonder)')
+        rospy.loginfo('唤醒后15秒内可以不用再唤醒(No need to wake up within 15 seconds after waking up)')
+        rospy.loginfo('控制指令: 开启颜色识别 关闭颜色识别(Voice command: start color recognition/stop color recognition)')
+        
         while self.running:
             if self.color == 'red' and self.last_color != 'red':
                 self.last_color = 'red'
-                voice_play.play('red')
+                self.play('red')
+                print('red')
             elif self.color == 'green' and self.last_color != 'green':
                 self.last_color = 'green'
-                voice_play.play('green')
+                self.play('green')
+                print('green')
             elif self.color == 'blue' and self.last_color != 'blue':
                 self.last_color = 'blue'
-                voice_play.play('blue')
+                self.play('blue')
+                print('blue')
             else:
                 self.count += 1
                 rospy.sleep(0.01)
@@ -45,7 +57,10 @@ class VoiceControlColorDetectNode:
                     self.count = 0
                     self.last_color = self.color
         rospy.signal_shutdown('shutdown')
- 
+
+    def play(self, name):
+        voice_play.play(name, language=self.language)
+
     def shutdown(self, signum, frame):
         self.running = False
         rospy.loginfo('shutdown')
@@ -62,9 +77,11 @@ class VoiceControlColorDetectNode:
 
     def words_callback(self, msg):
         words = json.dumps(msg.data, ensure_ascii=False)[1:-1]
+        if self.language == 'Chinese':
+            words = words.replace(' ', '')
         print('words:', words)
-        if words is not None and words not in ['唤醒成功', '休眠', '失败5次', '失败10次']:
-            if words == '开启颜色识别':
+        if words is not None and words not in ['唤醒成功(wake-up-success)', '休眠(Sleep)', '失败5次(Fail-5-times)', '失败10次(Fail-10-times']:
+            if words == '开启颜色识别' or words == 'start color recognition':
                 msg_red = ColorDetect()
                 msg_red.color_name = 'red'
                 msg_red.detect_type = 'circle'
@@ -76,18 +93,18 @@ class VoiceControlColorDetectNode:
                 msg_blue.detect_type = 'circle'
                 res = rospy.ServiceProxy('/color_detect/set_param', SetColorDetectParam)([msg_red, msg_green, msg_blue])
                 if res.success:
-                    voice_play.play('open_success')
+                    self.play('open_success')
                 else:
-                    voice_play.play('open_fail')
-            elif words == '关闭颜色识别':
+                    self.play('open_fail')
+            elif words == '关闭颜色识别' or words == 'stop color recognition':
                 res = rospy.ServiceProxy('/color_detect/set_param', SetColorDetectParam)([])
                 if res.success:
-                    voice_play.play('close_success')
+                    self.play('close_success')
                 else:
-                    voice_play.play('close_fail')
-        elif words == '唤醒成功':
-            voice_play.play('awake')
-        elif words == '休眠':
+                    self.play('close_fail')
+        elif words == '唤醒成功(wake-up-success)':
+            self.play('awake')
+        elif words == '休眠(Sleep)':
             buzzer.on()
             rospy.sleep(0.05)
             buzzer.off()

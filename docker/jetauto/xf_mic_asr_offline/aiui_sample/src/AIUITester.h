@@ -13,30 +13,30 @@
 class AIUITester
 {
 private:
-	IAIUIAgent* agent;//aiui代理(aiui aproxy)
+	IAIUIAgent* agent;//aiui代理
 	TestListener listener;
-	AudioRecorder* audioRecorder;//与录音相关的(related to recording)
-	AudioPlayer* audioPlayer;//与音频播放相关(related to audio playing)
+	AudioRecorder* audioRecorder;//与录音相关的
+	AudioPlayer* audioPlayer;//与音频播放相关
 public:
 	AIUITester() ;
 	~AIUITester();
 private:
 	void showIntroduction(bool detail);
-	//创建AIUI 代理，通过AIUI代理与SDK发送消息通信(create AIUI proxy. Communicate with SDK proxy through AIUI)
+	//创建AIUI 代理，通过AIUI代理与SDK发送消息通信
 	void createAgent();
-	//唤醒接口(wake up interface)
+	//唤醒接口
 	void wakeup();
 
-	//开始AIUI，调用stop()之后需要调用此接口才可以与AIUI继续交互(start AIUI. Only if this interface is called after stop() is called, the interaction with AIUI can be continued)
+	//开始AIUI，调用stop()之后需要调用此接口才可以与AIUI继续交互
 	void start();
-	//停止AIUI(stop AIUI)
+	//停止AIUI
 	void stop();
 
-	//usb麦克风设备创建(create usb microphone device)
+	//usb麦克风设备创建
     void recorder_creat();
-	//麦克风录音开始(microphone starts recording)
+	//麦克风录音开始
 	void recorder_start();
-	//麦克风录音结束(microphone finishes recording)
+	//麦克风录音结束
 	void recorder_stop();
 
 	void stopWriteThread();

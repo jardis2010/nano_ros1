@@ -65,14 +65,14 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				//printf(">>>>>您已开启录音(start recording)\n");
+				//printf(">>>>>您已开启录音\n");
 			}
 		}
-		else if (businessMsg.msgId == 0x02) //recorder返回的降噪后的音频信息(the noise-reduced audio returned by recorder)
+		else if (businessMsg.msgId == 0x02) //recorder返回的降噪后的音频信息
 		{
 
 			int len = PCM_MSG_LEN;
-			Buffer *buffer = Buffer::alloc(len); //申请的内存会在sdk内部释放(the applied memory will be released in sdk)
+			Buffer *buffer = Buffer::alloc(len); //申请的内存会在sdk内部释放
 
 			if (if_print_proc_log)
 			{
@@ -120,10 +120,10 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				//printf(">>>>>您已停止录音(stop recording)\n");
+				//printf(">>>>>您已停止录音\n");
 			}
 		}
-		else if (businessMsg.msgId == 0x06) //recorder返回的8路的原始音频(original 8-lane audio returned by recorder)
+		else if (businessMsg.msgId == 0x06) //recorder返回的8路的原始音频
 		{
 			if (if_save_record_file)
 			{ //
@@ -137,7 +137,7 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				printf(">>>>>开/关原始音频成功(successfully open/ close original audio)\n");
+				printf(">>>>>开/关原始音频成功\n");
 			}
 		}
 		else if (businessMsg.msgId == 0x05)
@@ -146,14 +146,14 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				//printf(">>>>>识音角度设置成功(successfully set voice recognition angle)\n");
+				//printf(">>>>>识音角度设置成功\n");
 			}
 		}
 		else if (businessMsg.msgId == 0x07)
 		{
 			unsigned char key[] = "beam";
 			int major_id = whether_set_succeed(businessMsg.data, key);
-			printf(">>>>>主麦克风id为%d号麦克风(NO.%d microphone is set as main microphone)\n", major_id);
+			printf(">>>>>主麦克风id为%d号麦克风\n", major_id);
 		}
 		else if (businessMsg.msgId == 0x08)
 		{
@@ -161,7 +161,7 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				printf("\n>>>>>设置主麦克风成功(successfully set main microphone)\n");
+				printf("\n>>>>>设置主麦克风成功\n");
 			}
 		}
 		else if (businessMsg.msgId == 0x09)
@@ -170,7 +170,7 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			if (status == 0)
 			{
-				printf("\n>>>>>设置灯光成功(successfully set the light)\n");
+				printf("\n>>>>>设置灯光成功\n");
 			}
 		}
 		break;
@@ -187,9 +187,9 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 				led_id = get_led_based_angle(mic_angle);
 				int ret1 = set_major_mic_id(major_mic_id);
 				int ret2 = set_target_led_on(led_id);
-				printf(">>>>>第%d个麦克风被唤醒(NO.%d microphone is awaken)\n", major_mic_id);
-				printf(">>>>>唤醒角度为:%d(wake-up angle: %d)\n", mic_angle);
-				printf(">>>>>已点亮%d灯(NO.%d light is on)\n", led_id);
+				printf(">>>>>第%d个麦克风被唤醒\n", major_mic_id);
+				printf(">>>>>唤醒角度为:%d\n", mic_angle);
+				printf(">>>>>已点亮%d灯\n", led_id);
 				gWakeup();
 				gTTS("恩?我在!");
 				if (if_save_record_file)
@@ -205,11 +205,11 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int result = whether_set_awake_word(businessMsg.data, key1);
 			if (result)
 			{
-				printf(">>>>>唤醒词设置成功(successfully set wake-up voice command)\n");
+				printf(">>>>>唤醒词设置成功\n");
 			}
 			else
 			{
-				printf(">>>>>唤醒词设置失败(fail to set wake-up voice command)\n");
+				printf(">>>>>唤醒词设置失败\n");
 			}
 		}
 		break;
@@ -220,13 +220,13 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			char protocol_version[40]; 
 			int ret = get_protocol_version(businessMsg.data,protocol_version);
-			printf(">>>>>麦克风%s,软件版本为:%s,协议版本为:%s(microphone %s, software version: %s, protocol version: %s)\n", (status == 0 ? "正常工作(working normally)" : "正在启动(starting)"),get_software_version(),protocol_version);
-			if (status == 1) // 传输配置文件(transfer configuration file)
+			printf(">>>>>麦克风%s,软件版本为:%s,协议版本为:%s\n", (status == 0 ? "正常工作" : "正在启动"),get_software_version(),protocol_version);
+			if (status == 1) // 传输配置文件
 			{
 				char *fileName = CONFIG_FILE_PATH;
 				send_resource_info(fileName, 0);
 			}
-			else if (status == 0) //已完成启动(complete booting up)
+			else if (status == 0) //已完成启动
 			{
 				AudioRecorder::if_success_boot = true;
 				is_boot = 1;
@@ -238,25 +238,25 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 		{
 			whether_set_resource_info(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x02) //3605D请求下载文件(3605D requests to download files)
+		else if (businessMsg.msgId == 0x02) //3605D请求下载文件
 		{
 			char *fileName = SOURCE_FILE_PATH;
 			send_resource_info(fileName, 1);
 		}
-		else if (businessMsg.msgId == 0x03) //文件接收结果(the reception result of file)
+		else if (businessMsg.msgId == 0x03) //文件接收结果
 		{
 			whether_set_resource_info(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x05) //3605D请求下载文件(3605D requests to download files)
+		else if (businessMsg.msgId == 0x05) //3605D请求下载文件
 		{
 			char fileName[] = SOURCE_FILE_PATH;
 			send_resource(businessMsg.data, fileName, 1);
 		}
-		else if (businessMsg.msgId == 0x04) //3605D上报升级结果(3605D reports the upgrade result)
+		else if (businessMsg.msgId == 0x04) //3605D上报升级结果
 		{
 			whether_upgrade_succeed(businessMsg.data);
 		}
-		else if (businessMsg.msgId == 0x08) //获取升级配置文件(obtain the upgraded configuration file)
+		else if (businessMsg.msgId == 0x08) //获取升级配置文件
 		{
 			printf("config.json: %s", businessMsg.data);
 		}
@@ -267,7 +267,7 @@ int AudioRecorder::business_proc_callback(business_msg_t businessMsg)
 	return 0;
 }
 
-//设置语义后合成时的发音人(set the spokesman)
+//设置语义后合成时的发音人
 void setParams()
 {
 	char *setParams = "{\"audioparams\":{\"vcn\":\"x2_yezi\"}}";
@@ -276,7 +276,7 @@ void setParams()
 }
 
 string mSyncSid;
-//事件回调接口，SDK状态，文本，语义结果等都是通过该接口抛出(the event callback interface, SDK status, text and semantics result are throwed through this interface)
+//事件回调接口，SDK状态，文本，语义结果等都是通过该接口抛出
 void TestListener::onEvent(const IAIUIEvent &event) const
 {
 	if (if_print_event_log)
@@ -285,8 +285,8 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	}
 	switch (event.getEventType())
 	{
-	//SDK 状态回调(SDK status callback)
-	case AIUIConstant::EVENT_STATE: //服务状态事件(service status event)
+	//SDK 状态回调
+	case AIUIConstant::EVENT_STATE: //服务状态事件
 	{
 		switch (event.getArg1())
 		{
@@ -314,27 +314,27 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	}
 	break;
 
-	/*唤醒事件回调唤醒事件(wakeup event callback wakeup event)
-    arg1字段取值(自1051版本开始支持)：(the value of arg1 field)
-    0 => 内部语音唤醒(0 => awaken by the internal voice)
-    1 => 外部手动唤醒（外部发送CMD_WAKEUP）。(1 => awaken by the external (send CMD_WAKEUP from the external)
-    info字段为唤醒结果JSON字符串。(the info filed is the awaking result JSON string.)*/
+	/*唤醒事件回调唤醒事件
+    arg1字段取值(自1051版本开始支持)：
+    0 => 内部语音唤醒
+    1 => 外部手动唤醒（外部发送CMD_WAKEUP）。
+    info字段为唤醒结果JSON字符串。*/
 	case AIUIConstant::EVENT_WAKEUP:
 	{
 		//cout << "EVENT_WAKEUP:" << event.getInfo() << endl;
-		cout << ">>>>>麦克风已唤醒，可进行对话(microphone is awaken, you start the talk)" << endl;
+		cout << ">>>>>麦克风已唤醒，可进行对话" << endl;
 	}
 	break;
 
-	//休眠事件回调准备休眠事件,当出现交互超时，服务会先抛出准备休眠事件，用户可在接收到该事件后的10s内继续交互。若10s内存在有效交互，则重新开始交互计时；若10s内不存在有效交互，则10s后进入休眠状态。(Sleep event callback prepare sleeping event. When the interaction timed out, the service will throws prepare sleeping event first. User can continue the interaction within 10s after receiving this event. If there is valid interaction within 10s, restart the interaction timing. If there is no valid interaction within 10s, enter sleep mode)
+	//休眠事件回调准备休眠事件,当出现交互超时，服务会先抛出准备休眠事件，用户可在接收到该事件后的10s内继续交互。若10s内存在有效交互，则重新开始交互计时；若10s内不存在有效交互，则10s后进入休眠状态。
 	case AIUIConstant::EVENT_SLEEP:
 	{
-		cout << ">>>>>麦克风准备进入休眠模式，将休眠(microphone is entering sleep mode)" << endl;
+		cout << ">>>>>麦克风准备进入休眠模式，将休眠" << endl;
 		//cout <<"VENT_SLEEP:arg1=" << event.getArg1() << endl;
 	}
 	break;
 
-	//VAD事件回调，如找到前后端点VAD事件当检测到输入音频的前端点后，会抛出该事件，用arg1标识前后端点或者音量信息:0(前端点)、1(音量)、2(后端点)、3（前端点超时）当arg1取值为1时，arg2为音量大小。(VAD event callback. If the front and rear endpoints are found, the VAD event will be thrown when the front endpoint where the audio is input is detected. And arg1 is used to identify the front and rear endpoints or volume information: 0 (front endpoint), 1 (volume), 2 (back endpoint), 3 ( Front endpoint timeout) When arg1 is 1, arg2 is the volume.)
+	//VAD事件回调，如找到前后端点VAD事件当检测到输入音频的前端点后，会抛出该事件，用arg1标识前后端点或者音量信息:0(前端点)、1(音量)、2(后端点)、3（前端点超时）当arg1取值为1时，arg2为音量大小。
 	case AIUIConstant::EVENT_VAD:
 	{
 		switch (event.getArg1())
@@ -342,13 +342,13 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 		case AIUIConstant::VAD_BOS:
 		{
 			// cout << "EVENT_VAD:" << "BOS" << endl;
-			cout << ">>>>>检测到对话开始(detected that the talk starts)" << endl;
+			cout << ">>>>>检测到对话开始" << endl;
 		}
 		break;
 
 		case AIUIConstant::VAD_EOS:
 		{
-			cout << ">>>>>检测到本轮对话结束(detected that the talk ends)" << endl;
+			cout << ">>>>>检测到本轮对话结束" << endl;
 			// cout << "EVENT_VAD:" << "EOS" << endl;
 		}
 		break;
@@ -370,8 +370,8 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	// 	cout << "AIUIConstant::EVENT_TTS" << endl;
 
 	// }
-	//最重要的结果事件回调(the most important result event callback)
-	case AIUIConstant::EVENT_RESULT: //data字段携带结果数据，info字段为描述数据的JSON字符串。(data field carries the result data. info field is JSON string describing the data)
+	//最重要的结果事件回调
+	case AIUIConstant::EVENT_RESULT: //data字段携带结果数据，info字段为描述数据的JSON字符串。
 	{
 		// cout << "AIUIConstant::EVENT_RESULT" << endl;
 		Json::Value bizParamJson;
@@ -387,9 +387,9 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 		Json::Value params = data["params"];
 		Json::Value content = (data["content"])[0];
 		string sub = params["sub"].asString();
-		//sub字段表示结果的类别，如iat听写，nlp语义结果(sub filed represents the result type, for example iat dictation, nlp semantic result)
+		//sub字段表示结果的类别，如iat听写，nlp语义结果
 #if if_print_proc_log
-		cout << ">>>>>当前事件状态:(current event status)" << data << endl;
+		cout << ">>>>>当前事件状态:" << data << endl;
 #endif
 		// cout <<  << endl;
 		if (sub == "nlp")
@@ -435,8 +435,8 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 
 					Json::Value result_answer = resultJson["intent"]["answer"]["text"];
 					std::string res_answer_str = result_answer.toStyledString();
-					cout << ">>>>>问题是:(question is)" << res_question_str << endl;
-					cout << ">>>>>答案是:(answer is)" << res_answer_str << endl;
+					cout << ">>>>>问题是:" << res_question_str << endl;
+					cout << ">>>>>答案是:" << res_answer_str << endl;
 					//gTTS(res_answer_str);
 					if (wait_for_awake_word)
 					{
@@ -480,7 +480,7 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 
 			if (2 == dts && errorinfo == "AIUI DATA NULL")
 			{
-				//满足这两个条件的是空结果,不处理,直接丢弃(The result that meets these two requirements is empty result. And it will not be handled and discarded directly)
+				//满足这两个条件的是空结果,不处理,直接丢弃
 			}
 			else if (3 == dts)
 			{
@@ -521,9 +521,9 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	}
 	break;
 
-	/*上传资源数据的返回结果某条CMD命令对应的返回事件,对于除CMD_GET_STATE外的有返回的命令，都会返回该事件，((upload the retuned result of the source data, the return event corresponding to some CMD command. For all the returned commands except CMD_GET_STATE, this event will always be returned))
-    用arg1标识对应的CMD命令，arg2为返回值，0表示成功，(use arg1 to mark the corresponding CMD command. arg2 is the returned value, and 0 means success operation)
-    info字段为描述信息。(info field is the description information)*/
+	/*上传资源数据的返回结果某条CMD命令对应的返回事件,对于除CMD_GET_STATE外的有返回的命令，都会返回该事件，
+    用arg1标识对应的CMD命令，arg2为返回值，0表示成功，
+    info字段为描述信息。*/
 	case AIUIConstant::EVENT_CMD_RETURN:
 	{
 		//cout << "onEvent --> EVENT_CMD_RETURN: arg1 is " << event.getArg1() << endl;
@@ -566,7 +566,7 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 			case AIUIConstant::SYNC_DATA_SPEAKABLE:
 				break;
 
-			case AIUIConstant::SYNC_DATA_QUERY: //查询结果(search result)
+			case AIUIConstant::SYNC_DATA_QUERY: //查询结果
 			{
 				if (AIUIConstant::SUCCESS == retcode)
 				{
@@ -625,7 +625,7 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	}
 	break;
 
-	case AIUIConstant::EVENT_ERROR: //arg1字段为错误码，info字段为错误描述信息。((arg1 field is the wrong code, and info field is the wrong description information))
+	case AIUIConstant::EVENT_ERROR: //arg1字段为错误码，info字段为错误描述信息。
 	{
 		cout << "EVENT_ERROR:" << dec << event.getArg1() << endl;
 		cout << " ERROR info is " << event.getInfo() << endl;
@@ -634,7 +634,7 @@ void TestListener::onEvent(const IAIUIEvent &event) const
 	}
 }
 
-//创建AIUI代理(create AIUI deputy)
+//创建AIUI代理
 void AIUITester::createAgent()
 {
 	string appid = "5e159d11";						 //5d3fbe80
@@ -653,11 +653,11 @@ void AIUITester::createAgent()
 		//for ivw support
 		string wakeup_mode = paramJson["speech"]["wakeup_mode"].asString();
 
-		//如果在aiui.cfg中设置了唤醒模式为ivw唤醒，那么需要对设置的唤醒资源路径作处理，并且设置唤醒的libmsc.so的路径为当前路径(If the awaking mode is set as ivw awaking in aiui.cfg, the set awaking resource path needs to be processed. And set the path of the awaken libmsc.so as the current path)
+		//如果在aiui.cfg中设置了唤醒模式为ivw唤醒，那么需要对设置的唤醒资源路径作处理，并且设置唤醒的libmsc.so的路径为当前路径
 		if (wakeup_mode == "ivw")
 		{
 
-			//readme中有说明，使用libmsc.so唤醒库，需要调用MSPLogin()先登录(there is explanation in readme. If you use libmsc.so awaking library and call MSPLogin(), please login)
+			//readme中有说明，使用libmsc.so唤醒库，需要调用MSPLogin()先登录
 			// string lgiparams = "appid=5d3fbe80,engine_start=ivw";
 			// string lgiparams = "appid=5d3fbe80";
 			// MSPLogin(NULL, NULL, lgiparams.c_str());
@@ -673,12 +673,12 @@ void AIUITester::createAgent()
 			paramJson["ivw"]["msc_lib_path"] = ivw_lib_path;
 		}
 		//end
-		const char *login_config = "appid = 5e159d11"; //登录参数(login parameter)
+		const char *login_config = "appid = 5e159d11"; //登录参数
 		int ret = 0;
-		ret = MSPLogin(NULL, NULL, login_config); //第一个参数为用户名，第二个参数为密码，传NULL即可，第三个参数是登录参数(the first parameter is the username. the second parameter is the password and NULL is ok. The third parameter is the login parameter)
+		ret = MSPLogin(NULL, NULL, login_config); //第一个参数为用户名，第二个参数为密码，传NULL即可，第三个参数是登录参数
 		if (0 != ret)
 		{
-			printf(">>>>>MSP登录失败：%d(MSP login failed: %d)\n", ret);
+			printf(">>>>>MSP登录失败：%d\n", ret);
 		}
 		Json::FastWriter writer;
 		string paramStr = writer.write(paramJson);
@@ -690,12 +690,12 @@ void AIUITester::createAgent()
 	}
 	else
 	{
-		cout << ">>>>>aiui.cfg 读取错误!(aiui.cfg reading error)" << endl;
+		cout << ">>>>>aiui.cfg 读取错误!" << endl;
 	}
 }
 
 /*
-	外部唤醒接口，通过发送CMD_WAKEUP命令对SDK进行外部唤醒，发送该命令后，SDK会进入working状态，用户就可以与SDK进行交互。(external awaking interface. Awake the SDK through sending CMD_WAKEUP command from external. After this command is sent, SDK will enter working mode, and user can interact with SDK)
+	外部唤醒接口，通过发送CMD_WAKEUP命令对SDK进行外部唤醒，发送该命令后，SDK会进入working状态，用户就可以与SDK进行交互。
 */
 void AIUITester::wakeup()
 {
@@ -747,7 +747,7 @@ void gTTS(string text)
 	}
 }
 
-//停止AIUI服务，此接口是与stop()对应，调用stop()之后必须调用此接口才能继续与SDK交互，如果你没有调用过stop(),就不需要调用该接口(stop AIUI service. This interface corresponds to stop(). After calling stop(), must call this interface to continue the SDK interaction. If you never call stop(), you don't need to call this interface)
+//停止AIUI服务，此接口是与stop()对应，调用stop()之后必须调用此接口才能继续与SDK交互，如果你没有调用过stop(),就不需要调用该接口
 void AIUITester::start()
 {
 	if (NULL != agent)
@@ -758,7 +758,7 @@ void AIUITester::start()
 	}
 }
 
-//停止AIUI服务(stop AIUI service)
+//停止AIUI服务
 void AIUITester::stop()
 {
 	if (NULL != agent)
@@ -802,7 +802,7 @@ void AIUITester::recorder_creat()
 {
 	if (agent == NULL)
 	{
-		cout << ">>>>>未创建麦克风录音代理(not create microphone recording proxy)\n"
+		cout << ">>>>>未创建麦克风录音代理\n"
 			 << endl;
 		return;
 	}
@@ -823,7 +823,7 @@ void AIUITester::recorder_start()
 		}
 		if (!first_log)
 		{
-			cout << ">>>>>请使用唤醒词唤醒(say wake-up command to wake up)\n"
+			cout << ">>>>>请使用唤醒词唤醒\n"
 				 << endl;
 			first_log = true;
 		}
@@ -902,7 +902,7 @@ void AIUITester::updateLocalLexicon()
 	}
 }
 
-//接收用户输入命令，调用不同的测试接口(receive the command input by user. Call different test interfaces)
+//接收用户输入命令，调用不同的测试接口
 void AIUITester::readCmd()
 {
 	string cmd;
@@ -919,13 +919,13 @@ void AIUITester::readCmd()
 
 void AIUITester::test()
 {
-	cout << ">>>>>创建AIUI代理Agent(create AIUI Agent)\n"
+	cout << ">>>>>创建AIUI代理Agent\n"
 		 << endl;
 	createAgent();
-	cout << ">>>>>正在准备开启麦克风(preparing microphone)" << endl;
+	cout << ">>>>>正在准备开启麦克风" << endl;
 	recorder_creat();
 
-	cout << ">>>>>开启录音(start recording)" << endl;
+	cout << ">>>>>开启录音" << endl;
 	recorder_start();
 	//cout << "buildGrammar" << endl;
 	//buildGrammar();

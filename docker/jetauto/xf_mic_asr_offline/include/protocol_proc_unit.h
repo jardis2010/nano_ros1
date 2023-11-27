@@ -24,24 +24,24 @@ typedef struct __PACKED
 	unsigned char modId;
 	unsigned char msgId;
 	unsigned char *data;
-	unsigned int length;		//data的数据长�?(data length)
+	unsigned int length;		//data的数据长�?
 }business_msg_t;
 
-typedef int(*pfunc_business_proc_callback)(business_msg_t businessMsg);	//业务处理(business handling)
-typedef void(*pfunc_err_proc)(void);	//包解析出错处�?(where packaging parsing error occurs)
-typedef int(*pfunc_send_msg)(const unsigned char *data, int size);	//底层发送消息机�?(underlying message sending mechanism)
-typedef int(*pfunc_recv_msg)(unsigned char *data, int size);		//底层接收消息机制(underlying message receiving mechanism)
+typedef int(*pfunc_business_proc_callback)(business_msg_t businessMsg);	//业务处理
+typedef void(*pfunc_err_proc)(void);	//包解析出错处�?
+typedef int(*pfunc_send_msg)(const unsigned char *data, int size);	//底层发送消息机�?
+typedef int(*pfunc_recv_msg)(unsigned char *data, int size);		//底层接收消息机制
 
 //opcode
 typedef enum {
 	OPCODE_REQUEST = 0x01,
 	OPCODE_RESPONSE,
-	OPCODE_INDICATION,			//主设备推送消息给从设备的方法(method for master device to push the message to slave device)
-	OPCODE_NOTIFICATION 		//从设备推送消息给主设备的方法(method for slave device to push the message to master device)
+	OPCODE_INDICATION,			//主设备推送消息给从设备的方法
+	OPCODE_NOTIFICATION 		//从设备推送消息给主设备的方法
 	// opcode_request	= 0x1,			
 	// opcode_response,
-	// opcode_indication,			//APP推送消息给设备的方�?(method for APP to push message to device)
-	// opcode_notification			//设备推送消息给APP的方�?(method for device to push message to device)
+	// opcode_indication,			//APP推送消息给设备的方�?
+	// opcode_notification			//设备推送消息给APP的方�?
 }opcode_type_t;
 
 /******************************************
@@ -50,9 +50,9 @@ header format:
 	4BYTE		4BYTE	1BYTE	1BYTE	4BYTE
 *******************************************/
 typedef struct __PACKED {
-	unsigned int start_flag;			//固定�?xFFAA5500，每一个数据包固定的开始序�?()
+	unsigned int start_flag;			//固定�?xFFAA5500，每一个数据包固定的开始序�?
     unsigned int handle;				//usb 通信协议中填�?
-    unsigned char version;						//协议版本(protocol version)
+    unsigned char version;						//协议版本
     unsigned char opcode;						//opcode_type_t
     unsigned int length;
 }message_client_header_t;
@@ -82,11 +82,11 @@ typedef enum {
 typedef enum
 {
     PARSE_NO_ERROR = 0,
-    PARSE_DATA_DEFICIENCIES,           //数据不足(insufficient data)
+    PARSE_DATA_DEFICIENCIES,           //数据不足
     PARSE_START_FLAG_ERROR,				//起始符出�?
     PARSE_CHECKSUM_ERROR,               //校验和出�?
-    PARSE_LENGTH_ERROR,                 //数据长度错误(data length error)
-    PARSE_NOT_ENOUGH_MEMORY,            //内存不足(insufficient storage)
+    PARSE_LENGTH_ERROR,                 //数据长度错误
+    PARSE_NOT_ENOUGH_MEMORY,            //内存不足
 }PARSE_ERROR;
 
 typedef struct {
@@ -106,7 +106,7 @@ typedef struct {
     pthread_t recv_tid;
     queue_t *send_queue;
     unsigned char read_buf[BUFFSIZE];
-    int rb_length;				//read buf的数据长�?(data length of read buf)
+    int rb_length;				//read buf的数据长�?
 }protocol_service_handle_t;
 
 

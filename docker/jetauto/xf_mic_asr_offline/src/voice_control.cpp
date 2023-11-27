@@ -9,6 +9,7 @@
 #include <locale>
 #include <codecvt>
 #include <ctime>
+#include <signal.h>
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <xf_mic_asr_offline/Get_Offline_Result_srv.h>
@@ -64,6 +65,21 @@ extern int whether_finised ;
 extern char *whole_result;
 int write_first_data = 0;
 int set_led_id ;
+
+const char str_ = '|';
+const char str_none = ' ';
+
+void shutdown(int sig)
+{
+  // Do some custom action.
+  // For example, publish a stop message to some other nodes.
+  
+  // All the default sigint handler does is call shutdown()
+  
+  sleep(3);
+  printf(">>>>>关闭中(close)......\n");
+  ros::shutdown();
+}
 
 /*获取文件大小(acquire file size)*/
 int FileSize(const char *fname)
@@ -162,7 +178,7 @@ int business_proc_callback(business_msg_t businessMsg)
 			if (businessMsg.length < len)
 			{
 				len = businessMsg.length;
-				cout << "businessMsg size is enough" << endl;
+				cout << "businessMsg size is noenough" << endl;
 			}
 			if (save_pcm_local)
 			{
@@ -170,7 +186,7 @@ int business_proc_callback(business_msg_t businessMsg)
 				if (-1 != FileSize(denoise_sound_path))
 				{
 					int file_size = FileSize(denoise_sound_path);
-					if (file_size > max_pcm_size) //超出最大文件限制,将删除,以节省磁盘空间(exceed the limit of largest file. The file will be deleted to save the disk space)
+					if (file_size > max_pcm_size) //超出最大文件限制,将删除,以节省磁盘空间(exceed the limit of largest file. The file will be deleted to save the disk
 					{
 						remove(denoise_sound_path);
 					}
@@ -245,7 +261,7 @@ int business_proc_callback(business_msg_t businessMsg)
 				int major_id = whether_set_succeed(businessMsg.data, key2);
 				major_mic_id = major_id;
 				Get_request_mic_id = true;
-				printf(">>>>>主麦克风id为%d号麦克风(NO.%d microphone is set as main microphone)\n", major_mic_id);
+				printf(">>>>>主麦克风id为%d号麦克风(NO.%d microphone is set as main microphone)\n", major_mic_id, major_mic_id);
 			}
 			catch (...)
 			{
@@ -297,9 +313,9 @@ int business_proc_callback(business_msg_t businessMsg)
 				int ret2 = set_target_led_on(led_id);
 				if (ret1 == 0 && ret2 == 0)
 				{
-					printf(">>>>>第%d个麦克风被唤醒(NO.%d microphone is awaken)\n", major_mic_id);
-					printf(">>>>>唤醒角度为:%d(wake-up angle: %d)\n", mic_angle);
-					printf(">>>>>已点亮%d灯(NO.%d is on)\n", led_id);
+					printf(">>>>>第%d个麦克风被唤醒(NO.%d microphone is awaken)\n", major_mic_id, major_mic_id);
+					printf(">>>>>唤醒角度为:%d(wake-up angle: %d)\n", mic_angle, mic_angle);
+					printf(">>>>>已点亮%d灯(NO.%d is on)\n", led_id, led_id);
 					Get_request_awake_angle = true;
 					std_msgs::Int32 awake_angle;
 					awake_angle.data = mic_angle;
@@ -314,7 +330,7 @@ int business_proc_callback(business_msg_t businessMsg)
 					major_mic_pub.publish(majormic);
 
 					std_msgs::String msg;
-					msg.data = "唤醒成功";
+					msg.data = "唤醒成功(wake-up-success)";
 					voice_words_pub.publish(msg);
 					
 					whether_finised = 1;
@@ -348,7 +364,7 @@ int business_proc_callback(business_msg_t businessMsg)
 			int status = whether_set_succeed(businessMsg.data, key);
 			char protocol_version[40]; 
 			int ret = get_protocol_version(businessMsg.data,protocol_version);
-			printf(">>>>>麦克风%s,软件版本为:%s,协议版本为:%s(%s microphone, software version: %s, protocol version: %s)\n", (status == 0 ? "正常工作(working normally)" : "正在启动(starting)"),get_software_version(),protocol_version);
+			printf(">>>>>麦克风%s,软件版本为:%s,协议版本为:%s(microphone %s, software version: %s, protocol version: %s)\n", (status == 0 ? "正常工作" : "正在启动"), get_software_version(), protocol_version, (status == 0 ? "working normally" : "starting"), get_software_version(), protocol_version);
 			if (status == 1)
 			{
 				char *fileName = join(source_path,SYSTEM_CONFIG_PATH);
@@ -400,9 +416,11 @@ Effective_Result show_result(char *string) //
 	{
 		char asr_result[32];	//识别到的关键字的结果(the result of the recognized keyword)
 		char asr_confidence[3]; //识别到的关键字的置信度(the confidence of the recognized keyword)
-		char *p1 = strstr(string, "<rawtext>");
-		char *p2 = strstr(string, "</rawtext>");
-		int n1 = p1 - string + 1;
+		//char *p1 = strstr(string, "<rawtext>");
+		//char *p2 = strstr(string, "</rawtext>");
+        char *p1 = strstr(string, "<focus>");
+		char *p2 = strstr(string, "</focus>");
+        int n1 = p1 - string + 1;
 		int n2 = p2 - string + 1;
 
 		char *p3 = strstr(string, "<confidence>");
@@ -420,8 +438,8 @@ Effective_Result show_result(char *string) //
 		confidence_int = atoi(asr_confidence);
 		if (confidence_int >= confidence)
 		{
-			strncpy(asr_result, string + n1 + strlen("<rawtext>") - 1, n2 - n1 - strlen("<rawtext>"));
-			asr_result[n2 - n1 - strlen("<rawtext>")] = '\0'; //加上字符串结束符。(add string terminator)
+			strncpy(asr_result, string + n1 + strlen("<focus>") - 1, n2 - n1 - strlen("<focus>"));
+			asr_result[n2 - n1 - strlen("<focus>")] = '\0'; //加上字符串结束符。(add string terminator)
 		}
 		else
 		{
@@ -429,7 +447,10 @@ Effective_Result show_result(char *string) //
 		}
 
 		current.effective_confidence = confidence_int;
-		strcpy(current.effective_word, asr_result);
+
+        std::replace(std::begin(asr_result), std::end(asr_result), str_, str_none);
+        strcpy(current.effective_word, asr_result);
+ 
 		return current;
 	}
 	else
@@ -495,9 +516,9 @@ bool Get_Offline_Recognise_Result(xf_mic_asr_offline::Get_Offline_Result_srv::Re
 			Effective_Result effective_ans = show_result(whole_result);
 			if (effective_ans.effective_confidence >= confidence) //如果大于置信度阈值则进行显示或者其他控制操作(if it is greater than the confidence threshold, display or other control operation will be performed)
 			{
-				printf(">>>>>是否识别成功:　[ %s ](whether the recognition succeeds): [ %s ])\n", "是(yes)");
-				printf(">>>>>关键字的置信度: [ %d ](keywors confidence: [ %d ])\n", effective_ans.effective_confidence);
-				printf(">>>>>关键字识别结果: [ %s ](keyword recognition result: [ %s ])\n", effective_ans.effective_word);
+				printf(">>>>>是否识别成功(whether the recognition succeeds):　[ %s ]\n", "是");
+				printf(">>>>>关键字的置信度(keywors confidence): [ %d ]\n", effective_ans.effective_confidence);
+				printf(">>>>>关键字识别结果(keyword recognition result): [ %s ]\n", effective_ans.effective_word);
 				/*发布结果(publish the result)*/
 				//control_jetbot(effective_ans.effective_word);
 				res.result = "ok";
@@ -513,8 +534,8 @@ bool Get_Offline_Recognise_Result(xf_mic_asr_offline::Get_Offline_Result_srv::Re
 			}
 			else
 			{
-				printf(">>>>>是否识别成功:　[ %s ](whether the recognition succeeds)\n", "否(No)");
-				printf(">>>>>关键字的置信度: [ %d ](keywords confidence: [ %d ])\n", effective_ans.effective_confidence);
+				printf(">>>>>是否识别成功(whether the recognition succeeds):　[ %s ]\n", "否");
+				printf(">>>>>关键字的置信度(keywords confidence): [ %d ]\n", effective_ans.effective_confidence);
 				printf(">>>>>关键字置信度较低，文本不予显示(keyword confidence is too low. The text will not be displayed)\n");
 				res.result = "fail";
 				res.fail_reason = "low_confidence error or 11212_license_expired_error";
@@ -591,7 +612,7 @@ bool Set_Awake_Word(xf_mic_asr_offline::Set_Awake_Word_srv::Request &req,
 					xf_mic_asr_offline::Set_Awake_Word_srv::Response &res)
 {
 	ROS_INFO("got request,start to correct awake word ...\n");
-	if (strlen(req.awake_word.c_str()) >= 12 && strlen(req.awake_word.c_str()) <= 18) //4-6个汉字(4-6 words)
+    if (strlen(req.awake_word.c_str()) >= 12 && strlen(req.awake_word.c_str()) <= 18) //4-6个汉字(4-6 words)
 	{
 		Set_request_awake_word = false;
 		int ret = set_awake_word(const_cast<char *>(req.awake_word.c_str()));
@@ -606,7 +627,7 @@ bool Set_Awake_Word(xf_mic_asr_offline::Set_Awake_Word_srv::Request &req,
 		while (!Set_request_awake_word)
 		{
 			endTime = clock();											  //计时开始(start timing)
-			if ((double)(endTime - startTime) / CLOCKS_PER_SEC > TIMEOUT) //等待时间大于5秒(wait longer than 5s)
+			if ((double)(endTime - startTime) / CLOCKS_PER_SEC > TIMEOUT) ///等待时间大于5秒(wait longer than 5s)
 			{
 				res.result = "fail";
 				res.fail_reason = "timeout_error";
@@ -794,7 +815,6 @@ bool Get_Major_Mic(xf_mic_asr_offline::Get_Major_Mic_srv::Request &req,
 	return true;
 }
 
-
 /*
 content:获取主麦克风编号,当请求1时,调用该接口.(acquire the number of the main microphone. When 1 is requested, this interface is called)
 */
@@ -826,37 +846,41 @@ bool Get_Awake_Angle(xf_mic_asr_offline::Get_Awake_Angle_srv::Request &req,
 /*程序入口(entry to the program)*/
 int main(int argc, char *argv[])
 {
-	ros::init(argc, argv, "voice_control");
+	ros::init(argc, argv, "voice_control", ros::init_options::NoSigintHandler);
 	ros::NodeHandle ndHandle("~");
-	ndHandle.param("/confidence", confidence, 0);//离线命令词识别置信度阈值(offline recognition confidence threshold of the voice command)
-	ndHandle.param("/seconds_per_order", time_per_order, 5); //单次录制音频的时长(time taken to record single audio)
-	ndHandle.param("source_path", source_path, std::string("/home/ubuntu/xf_mic/src/xf_mic_asr_offline"));
-	ndHandle.param("/appid", appid, std::string("35a989b1"));//appid，需要更换为自己的(appid. It should be changed to your own)
+    signal(SIGINT, shutdown);
 
-	printf("-----confidence =%d\n",confidence);
-	printf("-----time_per_order =%d\n",time_per_order);
+    std::string wakeup_word;
+	ndHandle.param("confidence", confidence, 0);//离线命令词识别置信度阈值(offline recognition confidence threshold of the voice command)
+	ndHandle.param("seconds_per_order", time_per_order, 5); //单次录制音频的时长(time taken to record single audio)
+	ndHandle.param("source_path", source_path, std::string(""));
+	ndHandle.param("appid", appid, std::string(""));//appid，需要更换为自己的(appid. It should be changed to your own)
+    ndHandle.param("awake_words", wakeup_word, std::string(""));
+	if (wakeup_word != "") {
+        strcpy(awake_words, wakeup_word.c_str());
+    }
+    printf(">>>>>confidence = %d\n",confidence);
+	printf(">>>>>time_per_order = %d\n",time_per_order);
 
-	cout<<"source_path="<<source_path<<endl;
-	cout<<"appid="<<appid<<endl;
+	cout<<">>>>>source_path = "<<source_path<<endl;
+	cout<<">>>>>appid = "<<appid<<endl;
 
 	APPID = &appid[0];
 
 	ros::NodeHandle n;
 
-	/*　topic 发布实时音频文件(topic publish the real-time audio file)*/
+	/*topic 发布实时音频文件(topic publish the real-time audio file)*/
 	pub_pcm = ndHandle.advertise<xf_mic_asr_offline::Pcm_Msg>(pcm_topic, 1);
-	/*　topic 发布唤醒角度(topic publish the awake angle)*/
+	/*topic 发布唤醒角度(topic publish the awake angle)*/
 	pub_awake_angle = ndHandle.advertise<std_msgs::Int32>(awake_angle_topic, 1);
-	/*　topic 发布主麦克风(topic publish the main microphone)*/
+	/*topic 发布主麦克风(topic publish the main microphone)*/
 	major_mic_pub = ndHandle.advertise<std_msgs::Int8>(major_mic_topic, 1);
-
 
 	voice_words_pub = n.advertise<std_msgs::String>(voice_words, 1);
 
 	awake_flag_pub = n.advertise<std_msgs::Int8>(awake_flag, 1);
 
 	voice_flag_pub = n.advertise<std_msgs::Int8>(voice_flag, 1);
-
 
 	/*srv　接收请求，开启录音或关闭录音(srv　receive the request. Start or stop recording)*/
 	ros::ServiceServer service_record_start = ndHandle.advertiseService("start_record_srv", Record_Start);
@@ -933,9 +957,12 @@ int main(int argc, char *argv[])
 	spinner.start();
 	if (major_mic_id>5 || major_mic_id<0)
 	{
-		printf(">>>>>未设置主麦，请唤醒或设置主麦(main microphone is not set. Please wake up or set main microphone)\n");
+		printf(">>>>>未设置主麦，请唤醒或设置主麦(main microphone is not set. please wake up or set main microphone)\n");
 	}
-	while (major_mic_id>5 || major_mic_id<0)
+    
+    ndHandle.setParam("start", true);
+	
+    while (major_mic_id>5 || major_mic_id<0)
 	{
 		sleep(1);
 	}
