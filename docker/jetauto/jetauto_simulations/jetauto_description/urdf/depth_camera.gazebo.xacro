@@ -46,12 +46,7 @@
         </sensor>
     </gazebo>
 
-    <xacro:macro name="model_color" params="link_name color_name">
-        <gazebo reference="${link_name}">
-            <material>Gazebo/${color_name}</material>
-            <turnGravityOff>false</turnGravityOff>
-        </gazebo>
-    </xacro:macro>
+    <xacro:include filename="$(find jetauto_description)/urdf/model_color.xacro"/>
 
-    <xacro:model_color link_name="$(arg depth_camera_name)_link"    color_name="black"/>
+    <xacro:model_color link_name="$(arg depth_camera_name)_link"    color_name="Black"/>
 </robot>

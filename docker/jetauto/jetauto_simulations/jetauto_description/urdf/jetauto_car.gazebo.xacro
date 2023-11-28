@@ -10,20 +10,15 @@
         </plugin>
     </gazebo>
 
-    <xacro:macro name="model_color" params="link_name color_name">
-        <gazebo reference="${link_name}">
-            <material>Gazebo/${color_name}</material>
-            <turnGravityOff>false</turnGravityOff>
-        </gazebo>
-    </xacro:macro>
+    <xacro:include filename="$(find jetauto_description)/urdf/model_color.xacro"/>
 
-    <xacro:model_color link_name="base_link"                        color_name="green"/>
-    <xacro:model_color link_name="lidar_link"                       color_name="black"/>
-    <xacro:model_color link_name="back_shell_link"                  color_name="black"/>
-    <xacro:model_color link_name="wheel_right_front_link"           color_name="black"/>
-    <xacro:model_color link_name="wheel_left_front_link"            color_name="black"/>
-    <xacro:model_color link_name="wheel_right_back_link"            color_name="black"/>
-    <xacro:model_color link_name="wheel_left_back_link"             color_name="black"/>
-    <xacro:model_color link_name="mic_link"                         color_name="black"/>
-    <xacro:model_color link_name="speaker_link"                     color_name="black"/>
+    <xacro:model_color link_name="base_link"                        color_name="Green"/>
+    <xacro:model_color link_name="lidar_link"                       color_name="Black"/>
+    <xacro:model_color link_name="back_shell_link"                  color_name="Black"/>
+    <xacro:model_color link_name="wheel_right_front_link"           color_name="Black"/>
+    <xacro:model_color link_name="wheel_left_front_link"            color_name="Black"/>
+    <xacro:model_color link_name="wheel_right_back_link"            color_name="Black"/>
+    <xacro:model_color link_name="wheel_left_back_link"             color_name="Black"/>
+    <xacro:model_color link_name="mic_link"                         color_name="Black"/>
+    <xacro:model_color link_name="speaker_link"                     color_name="Black"/>
 </robot>
